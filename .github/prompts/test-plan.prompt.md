@@ -5,11 +5,23 @@ description: Generate a comprehensive QA Test Plan document for a feature or mod
 
 # Generate QA Test Plan
 
-Create a comprehensive Test Plan document following industry standards and best practices.
+## If No Input Provided
 
-## Input Required
+If the user only sends the prompt name without any input, respond ONLY with:
 
-Provide the **feature, module, or application** to create a test plan for.
+```
+Please provide:
+
+- Feature/module name
+- Brief description of what it does
+- Any specific requirements or constraints (optional)
+```
+
+Do NOT explain the prompt. Just show the required input format.
+
+## Your Task
+
+When input is provided, create a comprehensive Test Plan document following industry standards.
 
 ## Output Format
 
