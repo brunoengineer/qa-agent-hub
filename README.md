@@ -20,7 +20,10 @@ Open **Copilot Chat** (`Ctrl+Alt+I`) → Type `#` → Select a prompt.
 | `#jira-task` | Create a QA task (implement tests, execute tests, update automation) |
 | `#test-plan` | Generate a comprehensive Test Plan document |
 | `#test-suggestions` | Generate ISTQB-aligned manual test cases |
+| `#test-approach` | Generate a test approach from a Jira ticket or feature description |
 | `#coverage-analysis` | Analyze test coverage against requirements |
+
+> 💡 **Tip:** Send only the prompt name (e.g., `#jira-bug`) without any input to see the required input format.
 
 ## Usage Examples
 
@@ -50,6 +53,23 @@ Feature: Shopping Cart Checkout
 
 Feature: User Registration form with email, password, and confirm password fields
 ```
+
+### Generate Test Approach
+
+```
+#test-approach
+
+[Paste your Jira ticket content here]
+```
+
+Generates an ISTQB-aligned test approach with:
+- 🎯 Objective
+- 📋 Test Scope (Focus, Components, Exclusions)
+- 🔍 Test Levels (Integration, Component, Performance, etc.)
+- 🧪 Test Techniques (Equivalence Partitioning, BVA, Positive/Negative)
+- 🖥️ Test Environment (Postman, Bender, Kibana, BO)
+- ⚠️ Risk-Based Testing
+- ✅ Exit Criteria
 
 ### Analyze Coverage
 
