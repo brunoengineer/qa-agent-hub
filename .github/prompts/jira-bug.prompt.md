@@ -28,7 +28,7 @@ From their description, generate a complete bug ticket.
 ## Output Format
 
 ```
-## 🐛 [Brief title describing the bug]
+# 🐛 [Brief title describing the bug]
 
 **Priority:** High/Medium/Low
 **Environment:** (infer or ask if critical)
@@ -65,6 +65,17 @@ From their description, generate a complete bug ticket.
 ### 🏷️ Labels
 `bug`, `[component]`, `[priority]`
 ```
+
+## File Output (Required)
+
+When (and only when) input is provided and you generate the ticket:
+
+1. Ensure the directory `response/jira-bug/` exists (create it if missing).
+2. Create a Markdown file under `response/jira-bug/`.
+3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is a lowercase, hyphenated version of the title (max ~60 chars). If a slug cannot be derived, use `YYYY-MM-DD-response.md`.
+4. The saved file content must be the final ticket in Markdown.
+	- Ensure the first line is a single H1 title (`# ...`).
+5. Do not create any file when the user provided no input (the “Please describe the issue” case).
 
 ## Guidelines
 

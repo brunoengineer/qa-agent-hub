@@ -28,7 +28,7 @@ From their description, generate a complete QA task ticket.
 ## Output Format
 
 ```
-## 🧪 [Brief title describing the QA task]
+# 🧪 [Brief title describing the QA task]
 
 **Type:** Task
 **Priority:** High/Medium/Low
@@ -57,6 +57,17 @@ From their description, generate a complete QA task ticket.
 ### 🏷️ Labels
 `qa`, `automation`, `[component]`
 ```
+
+## File Output (Required)
+
+When (and only when) input is provided and you generate the task:
+
+1. Ensure the directory `response/jira-task/` exists (create it if missing).
+2. Create a Markdown file under `response/jira-task/`.
+3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is a lowercase, hyphenated version of the title (max ~60 chars). If a slug cannot be derived, use `YYYY-MM-DD-response.md`.
+4. The saved file content must be the final task in Markdown.
+	- Ensure the first line is a single H1 title (`# ...`).
+5. Do not create any file when the user provided no input (the “Please describe the QA task” case).
 
 ## Task Types to Recognize
 

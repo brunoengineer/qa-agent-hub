@@ -87,6 +87,17 @@ When suggesting test environments, consider these tools are available:
 - [Criterion 3 - e.g., coverage requirement]
 ```
 
+## File Output (Required)
+
+When (and only when) input is provided and you generate the test approach:
+
+1. Ensure the directory `response/test-approach/` exists (create it if missing).
+2. Create a Markdown file under `response/test-approach/`.
+3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is based on the feature/ticket name inferred from the input (lowercase, hyphenated, max ~60 chars). If you cannot infer a name, use `YYYY-MM-DD-test-approach.md`.
+4. Save the final output as Markdown.
+	- Prepend a single H1 title line at the top of the saved file: `# Test Approach - <Feature/Ticket>`.
+5. Do not create any file when the user provided no input (the “Please provide …” case).
+
 ## Adaptation Notes
 
 - Remove sections that don't apply to the ticket

@@ -5,3 +5,6 @@ Thumbs.db
 # IDE
 .idea/
 *.swp
+
+# Generated prompt responses (do not commit anything under response/)
+response/

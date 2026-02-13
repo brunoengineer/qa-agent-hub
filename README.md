@@ -25,6 +25,16 @@ Open **Copilot Chat** (`Ctrl+Alt+I`) → Type `#` → Select a prompt.
 
 > 💡 **Tip:** Send only the prompt name (e.g., `#jira-bug`) without any input to see the required input format.
 
+## Response Artifacts (Local)
+
+Each prompt is designed to **save its output locally** so you have a lightweight audit trail of QA work without needing to copy/paste results into files manually.
+
+- Outputs are written under `response/<prompt-name>/` (the prompt creates the folder if it doesn’t exist).
+- Filenames follow: `YYYY-MM-DD-<slug>.md` (based on the generated title/feature name).
+- The `response/` folder is **ignored by Git** by default (see `.gitignore`), so generated responses are **not pushed to GitHub**.
+
+This keeps the repository clean while still letting you keep local “work logs” for tickets, test plans, and test cases.
+
 ## Usage Examples
 
 ### Create a Bug Ticket

@@ -116,3 +116,14 @@ List key test areas with priority using WRPN (Weighted Risk Priority Number):
 - Include measurable criteria where possible
 - Align with Agile methodology when applicable
 - Keep language professional and actionable
+
+## File Output (Required)
+
+When (and only when) input is provided and you generate the test plan:
+
+1. Ensure the directory `response/test-plan/` exists (create it if missing).
+2. Create a Markdown file under `response/test-plan/`.
+3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from the feature/module name (lowercase, hyphenated, max ~60 chars). If missing, use `YYYY-MM-DD-test-plan.md`.
+4. Save the final plan as Markdown.
+	- Prepend a single H1 title line at the top of the saved file: `# QA Test Plan - <Feature/Module>`.
+5. Do not create any file when the user provided no input (the “Please provide …” case).

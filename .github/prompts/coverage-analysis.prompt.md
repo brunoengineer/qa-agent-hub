@@ -74,6 +74,16 @@ Return the analysis in this exact structure:
 **Analysis Date:** YYYY-MM-DD
 ```
 
+## File Output (Required)
+
+When (and only when) input is provided and you generate the analysis:
+
+1. Ensure the directory `response/coverage-analysis/` exists (create it if missing).
+2. Create a Markdown file under `response/coverage-analysis/`.
+3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from `[Feature Name]` (lowercase, hyphenated, max ~60 chars). If you cannot infer a feature name, use `YYYY-MM-DD-test-coverage-analysis.md`.
+4. Save the final report Markdown as the file content.
+5. Do not create any file when the user provided no input (the “Please provide …” case).
+
 ## Analysis Requirements
 
 ### 1. Requirements Categories

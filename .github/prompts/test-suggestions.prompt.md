@@ -76,3 +76,15 @@ When relevant, include cases for:
 ## Output
 
 Return **only** the precondition line and the Markdown table. No extra commentary unless the user asks for it.
+
+## File Output (Required)
+
+When (and only when) input is provided and you generate the manual test cases:
+
+1. Ensure the directory `response/test-suggestions/` exists (create it if missing).
+2. Create a Markdown file under `response/test-suggestions/`.
+3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from the feature/requirement name (lowercase, hyphenated, max ~60 chars). If missing, use `YYYY-MM-DD-manual-test-cases.md`.
+4. Save the Markdown in the file exactly as a runnable `.md` document:
+	- The saved file must start with an H1 title line: `# Manual Test Cases - <Feature/Requirement>`.
+	- Then include the same precondition line and the same table you returned to the user (do not add extra sections).
+5. Do not create any file when the user provided no input (the “Please provide …” case).
