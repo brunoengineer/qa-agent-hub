@@ -1,8 +1,19 @@
 # 🧪 QA Agent Hub
 
-> Reusable Copilot prompts for QA Engineers
+Reusable GitHub Copilot Chat prompts to speed up common QA work (bug tickets, QA tasks, test plans, test approaches, manual test cases, and coverage analysis).
 
-## Quick Start
+This repo is meant to be opened in VS Code and used via Copilot Chat’s prompt picker.
+
+## What’s in this repo
+
+- Prompt files live in `.github/prompts/` as `*.prompt.md`.
+- You run them from Copilot Chat by typing `#` and selecting a prompt.
+- Each prompt documents:
+	- What input it needs (or how it behaves when no input is provided)
+	- What output format you’ll receive
+	- How it saves a local response file for traceability
+
+## Quick start
 
 ```bash
 git clone https://github.com/brunoengineer/qa-agent-hub.git
@@ -10,98 +21,97 @@ cd qa-agent-hub
 code .
 ```
 
-Open **Copilot Chat** (`Ctrl+Alt+I`) → Type `#` → Select a prompt.
+In VS Code:
 
-## Available Prompts
+1. Open **Copilot Chat** (`Ctrl+Alt+I`).
+2. Type `#`.
+3. Pick a prompt (for example `#jira-bug`).
+4. Paste the requested input.
 
-| Prompt | What it does |
-|--------|--------------|
-| `#jira-bug` | Create a bug ticket from issue description |
-| `#jira-task` | Create a QA task (implement tests, execute tests, update automation) |
-| `#test-plan` | Generate a comprehensive Test Plan document |
-| `#test-suggestions` | Generate ISTQB-aligned manual test cases |
-| `#test-approach` | Generate a test approach from a Jira ticket or feature description |
-| `#coverage-analysis` | Analyze test coverage against requirements |
+Tip: send only the prompt name (for example `#jira-bug`) to see the exact input format required.
 
-> 💡 **Tip:** Send only the prompt name (e.g., `#jira-bug`) without any input to see the required input format.
+## Local response files (work log)
 
-## Response Artifacts (Local)
+When you provide input, each prompt will:
 
-Each prompt is designed to **save its output locally** so you have a lightweight audit trail of QA work without needing to copy/paste results into files manually.
+1. Generate the answer in chat.
+2. Create a local Markdown file under `response/<prompt-name>/`.
+3. Use a dated filename like `YYYY-MM-DD-<slug>.md`.
 
-- Outputs are written under `response/<prompt-name>/` (the prompt creates the folder if it doesn’t exist).
-- Filenames follow: `YYYY-MM-DD-<slug>.md` (based on the generated title/feature name).
-- The `response/` folder is **ignored by Git** by default (see `.gitignore`), so generated responses are **not pushed to GitHub**.
+The entire `response/` directory is ignored by Git (see `.gitignore`), so these generated files stay local and are never pushed to GitHub.
 
-This keeps the repository clean while still letting you keep local “work logs” for tickets, test plans, and test cases.
+## Available prompts (inputs & outputs)
 
-## Usage Examples
+| Prompt | Use it for | Minimum input | Output you get |
+|---|---|---|---|
+| `#jira-bug` | Bug ticket for a defect | What happened / Expected / Steps | A Jira-ready bug report in Markdown |
+| `#jira-task` | QA task ticket (automation/execution/maintenance) | What needs doing / Component / Priority | A Jira-ready QA task in Markdown |
+| `#test-plan` | Full QA test plan | Feature/module + brief description | A structured test plan with scope/approach/risks |
+| `#test-approach` | Short ISTQB-aligned test approach | Jira ticket or feature description | Test scope/levels/techniques/env/risks/exit criteria |
+| `#test-suggestions` | Manual test cases (table format) | Feature + flows + constraints | A precondition line + a Markdown table of tests |
+| `#coverage-analysis` | Coverage mapping vs requirements | Requirements list + existing test cases | Coverage table, gaps, and prioritized recommendations |
 
-### Create a Bug Ticket
 
-```
-#jira-bug
+## Create a new prompt (template)
 
-Issue: User cannot login after password reset
-Expected: User logs in successfully
-Actual: "Invalid credentials" error shown
-Steps: 1) Reset password 2) Try to login with new password
-```
+Add a new file under `.github/prompts/` named `<prompt-name>.prompt.md`.
 
-### Create a Test Plan
-
-```
-#test-plan
-
-Feature: Shopping Cart Checkout
-```
-
-### Generate Test Cases
-
-```
-#test-suggestions
-
-Feature: User Registration form with email, password, and confirm password fields
-```
-
-### Generate Test Approach
-
-```
-#test-approach
-
-[Paste your Jira ticket content here]
-```
-
-Generates an ISTQB-aligned test approach with:
-- 🎯 Objective
-- 📋 Test Scope (Focus, Components, Exclusions)
-- 🔍 Test Levels (Integration, Component, Performance, etc.)
-- 🧪 Test Techniques (Equivalence Partitioning, BVA, Positive/Negative)
-- 🖥️ Test Environment (Postman, Bender, Kibana, BO)
-- ⚠️ Risk-Based Testing
-- ✅ Exit Criteria
-
-### Analyze Coverage
-
-```
-#coverage-analysis
-
-Requirements: UC-001 User Login, UC-002 User Registration
-Test Cases: TC-001 Valid login, TC-002 Invalid password
-```
-
-## Create Your Own Prompts
-
-Add `.prompt.md` files to `.github/prompts/`:
+Use this template (copy/paste):
 
 ```markdown
 ---
 agent: agent
-description: What this prompt does
+description: <one-line description>
 ---
 
-Your instructions here...
+You are a **Senior QA Engineer**.
+
+## If No Input Provided
+
+If the user only sends the prompt name without any input, respond ONLY with:
+
+Please provide:
+
+- <input field 1>
+- <input field 2>
+- <input field 3>
+
+Do NOT explain the prompt. Just show the required input format.
+
+## Your Task
+
+When input is provided, produce the requested QA artifact.
+
+## Output Format
+
+Return the response in the exact structure below:
+
+# <Title>
+
+<sections / tables / bullets>
+
+
+## File Output (Required)
+
+When (and only when) input is provided and you generate the output:
+
+1. Ensure the directory `response/<prompt-name>/` exists (create it if missing).
+2. Create a Markdown file under `response/<prompt-name>/`.
+3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from the title or feature name (lowercase, hyphenated, max ~60 chars).
+4. Save the final Markdown output as the file content.
+5. Do not create any file when the user provided no input.
+
+## Guidelines
+- Only ask the user to describe what they need
+- Infer...
+- Be specific about...
+- Include practical...
 ```
+
+Guidelines for a “good prompt” here:
+- Be strict about input requirements and output format.
+- Make outputs immediately usable (Jira-ready, runnable tables, clear steps).
+- Keep it deterministic: avoid vague language where possible.
 
 ## Requirements
 
