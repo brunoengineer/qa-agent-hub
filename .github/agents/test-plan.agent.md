@@ -1,6 +1,8 @@
 ---
-agent: agent
+name: Test Plan
 description: Generate a comprehensive QA Test Plan document for a feature or module
+tools:
+  - createFile
 ---
 
 # Generate QA Test Plan
@@ -126,4 +128,4 @@ When (and only when) input is provided and you generate the test plan:
 3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from the feature/module name (lowercase, hyphenated, max ~60 chars). If missing, use `YYYY-MM-DD-test-plan.md`.
 4. Save the final plan as Markdown.
 	- Prepend a single H1 title line at the top of the saved file: `# QA Test Plan - <Feature/Module>`.
-5. Do not create any file when the user provided no input (the “Please provide …” case).
+5. Do not create any file when the user provided no input (the "Please provide …" case).

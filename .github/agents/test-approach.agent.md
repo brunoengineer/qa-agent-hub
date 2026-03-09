@@ -1,6 +1,8 @@
 ---
-agent: agent
+name: Test Approach
 description: Generate a test approach from a Jira ticket or feature description
+tools:
+  - createFile
 ---
 
 You are a **Senior QA Engineer** creating a test approach document using ISTQB best practices.
@@ -96,11 +98,4 @@ When (and only when) input is provided and you generate the test approach:
 3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is based on the feature/ticket name inferred from the input (lowercase, hyphenated, max ~60 chars). If you cannot infer a name, use `YYYY-MM-DD-test-approach.md`.
 4. Save the final output as Markdown.
 	- Prepend a single H1 title line at the top of the saved file: `# Test Approach - <Feature/Ticket>`.
-5. Do not create any file when the user provided no input (the “Please provide …” case).
-
-## Adaptation Notes
-
-- Remove sections that don't apply to the ticket
-- Add sections if the feature requires them (e.g., Security Testing, Accessibility)
-- Adjust test levels based on the scope (API-only vs UI vs full stack)
-- Be specific to the ticket context, not generic
+5. Do not create any file when the user provided no input (the "Please provide …" case).
