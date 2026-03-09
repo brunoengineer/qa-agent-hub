@@ -1,17 +1,48 @@
 # 🧪 QA Agent Hub
 
-Reusable GitHub Copilot Chat prompts to speed up common QA work (bug tickets, QA tasks, test plans, test approaches, manual test cases, and coverage analysis).
+Reusable GitHub Copilot agents and prompts to speed up common QA work (bug tickets, QA tasks, test plans, test approaches, manual test cases, and coverage analysis).
 
-This repo is meant to be opened in VS Code and used via Copilot Chat’s prompt picker.
+This repo is meant to be opened in VS Code and used via Copilot Chat's agent and prompt picker.
 
-## What’s in this repo
+## Repository structure
 
-- Prompt files live in `.github/prompts/` as `*.prompt.md`.
-- You run them from Copilot Chat by typing `#` and selecting a prompt.
-- Each prompt documents:
-	- What input it needs (or how it behaves when no input is provided)
-	- What output format you’ll receive
-	- How it saves a local response file for traceability
+```
+.github/
+├── agents/                        # Agent definitions (instructions + tools)
+│   ├── jira-bug.agent.md
+│   ├── jira-task.agent.md
+│   ├── test-approach.agent.md
+│   ├── coverage-analysis.agent.md
+│   ├── test-plan.agent.md
+│   └── test-suggestions.agent.md
+├── prompts/                       # Prompt triggers (thin wrappers that invoke agents)
+│   ├── jira/
+│   │   ├── jira-bug.prompt.md
+│   │   ├── jira-task.prompt.md
+│   │   └── test-approach.prompt.md
+│   ├── qa-documentation/
+│   │   ├── coverage-analysis.prompt.md
+│   │   └── test-plan.prompt.md
+│   └── test-suggestions.prompt.md
+└── copilot-instructions.md        # Global Copilot context for this repo
+
+response/                          # Local work log (generated files, not committed)
+├── jira-bug/
+├── jira-task/
+├── test-approach/
+├── coverage-analysis/
+├── test-plan/
+└── test-suggestions/
+```
+
+## How it works
+
+Each QA task is backed by two files:
+
+- **Agent** (`.github/agents/<name>.agent.md`) — contains the full system instructions: persona, output format, guidelines, and file-saving rules.
+- **Prompt** (`.github/prompts/**/<name>.prompt.md`) — a thin trigger that routes to the agent via `agent: <Agent Name>` in its frontmatter.
+
+When you invoke a prompt, Copilot Chat switches to the corresponding agent mode automatically.
 
 ## Quick start
 
@@ -24,100 +55,56 @@ code .
 In VS Code:
 
 1. Open **Copilot Chat** (`Ctrl+Alt+I`).
-2. Type `#`.
-3. Pick a prompt (for example `#jira-bug`).
-4. Paste the requested input.
+2. Type `#` and pick a prompt (e.g. `#jira-bug`).
+3. Paste the requested input.
 
-Tip: send only the prompt name (for example `#jira-bug`) to see the exact input format required.
+Tip: send only the prompt name (e.g. `#jira-bug`) with no input to see the exact format required.
+
+## Available agents
+
+| Prompt | Agent | Use it for | Minimum input | Output |
+|---|---|---|---|---|
+| `#jira-bug` | Jira Bug | Bug ticket for a defect | What happened / Expected / Steps | Jira-ready bug report |
+| `#jira-task` | Jira Task | QA task (automation/execution/maintenance) | What needs doing / Component / Priority | Jira-ready QA task |
+| `#test-approach` | Test Approach | Short ISTQB-aligned test approach | Jira ticket or feature description | Scope/levels/techniques/env/risks/exit criteria |
+| `#coverage-analysis` | Coverage Analysis | Coverage mapping vs requirements | Requirements list + existing test cases | Coverage table, gaps, recommendations |
+| `#test-plan` | Test Plan | Full QA test plan | Feature/module + brief description | Structured test plan with scope/approach/risks |
+| `#test-suggestions` | Test Suggestions | Manual test cases (table format) | Feature + flows + constraints | Precondition line + Markdown table of tests |
 
 ## Local response files (work log)
 
-When you provide input, each prompt will:
+When you provide input, the agent will:
 
 1. Generate the answer in chat.
-2. Create a local Markdown file under `response/<prompt-name>/`.
+2. Create a local Markdown file under `response/<name>/`.
 3. Use a dated filename like `YYYY-MM-DD-<slug>.md`.
 
-The entire `response/` directory is ignored by Git (see `.gitignore`), so these generated files stay local and are never pushed to GitHub.
+The folder structure under `response/` is committed to Git, but generated files inside each folder are ignored (see `.gitignore`).
 
-## Available prompts (inputs & outputs)
+## Add a new agent
 
-| Prompt | Use it for | Minimum input | Output you get |
-|---|---|---|---|
-| `#jira-bug` | Bug ticket for a defect | What happened / Expected / Steps | A Jira-ready bug report in Markdown |
-| `#jira-task` | QA task ticket (automation/execution/maintenance) | What needs doing / Component / Priority | A Jira-ready QA task in Markdown |
-| `#test-plan` | Full QA test plan | Feature/module + brief description | A structured test plan with scope/approach/risks |
-| `#test-approach` | Short ISTQB-aligned test approach | Jira ticket or feature description | Test scope/levels/techniques/env/risks/exit criteria |
-| `#test-suggestions` | Manual test cases (table format) | Feature + flows + constraints | A precondition line + a Markdown table of tests |
-| `#coverage-analysis` | Coverage mapping vs requirements | Requirements list + existing test cases | Coverage table, gaps, and prioritized recommendations |
+1. Create `.github/agents/<name>.agent.md` with the full instructions:
 
-
-## Create a new prompt (template)
-
-Add a new file under `.github/prompts/` named `<prompt-name>.prompt.md`.
-
-Use this template (copy/paste):
-
-```markdown
+\`\`\`markdown
 ---
-agent: agent
-description: <one-line description>
+name: My Agent Name
+description: One-line description
+tools:
+  - createFile
 ---
 
 You are a **Senior QA Engineer**.
 
-## If No Input Provided
+...instructions, output format, file output rules...
+\`\`\`
 
-If the user only sends the prompt name without any input, respond ONLY with:
+2. Create `.github/prompts/<name>.prompt.md` to invoke it:
 
-Please provide:
+\`\`\`markdown
+---
+agent: My Agent Name
+description: One-line description
+---
+\`\`\`
 
-- <input field 1>
-- <input field 2>
-- <input field 3>
-
-Do NOT explain the prompt. Just show the required input format.
-
-## Your Task
-
-When input is provided, produce the requested QA artifact.
-
-## Output Format
-
-Return the response in the exact structure below:
-
-# <Title>
-
-<sections / tables / bullets>
-
-
-## File Output (Required)
-
-When (and only when) input is provided and you generate the output:
-
-1. Ensure the directory `response/<prompt-name>/` exists (create it if missing).
-2. Create a Markdown file under `response/<prompt-name>/`.
-3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from the title or feature name (lowercase, hyphenated, max ~60 chars).
-4. Save the final Markdown output as the file content.
-5. Do not create any file when the user provided no input.
-
-## Guidelines
-- Only ask the user to describe what they need
-- Infer...
-- Be specific about...
-- Include practical...
-```
-
-Guidelines for a “good prompt” here:
-- Be strict about input requirements and output format.
-- Make outputs immediately usable (Jira-ready, runnable tables, clear steps).
-- Keep it deterministic: avoid vague language where possible.
-
-## Requirements
-
-- VS Code
-- GitHub Copilot
-
-## License
-
-MIT
+3. Add a `.gitkeep` to `response/<name>/` and update `.gitignore` with `response/<name>/*`.
