@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const GENERATED_OUTPUT_IGNORE = "qa-agent-hub/response/**/*.md";
 const GITIGNORE_MARKER_START = "# QA Agent Hub generated outputs";
+const OPTIONAL_WORKSPACE_INSTRUCTIONS_PATH = ".github/copilot-instructions.md";
 
 type Options = {
   targetRepo: string;
@@ -139,6 +140,14 @@ function assertTargetRepo(targetRepo: string): void {
   }
 }
 
+function shouldSkipOptionalWorkspaceInstructions(
+  relativeSourcePath: string,
+  absoluteTargetPath: string,
+  force: boolean,
+): boolean {
+  return relativeSourcePath === OPTIONAL_WORKSPACE_INSTRUCTIONS_PATH && existsSync(absoluteTargetPath) && !force;
+}
+
 function main(): void {
   const options = parseArgs(process.argv.slice(2));
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
@@ -151,7 +160,7 @@ function main(): void {
     ".github/agents",
     ".github/prompts",
     ".github/instructions",
-    ".github/copilot-instructions.md",
+    OPTIONAL_WORKSPACE_INSTRUCTIONS_PATH,
   ];
 
   const directoryPathsToCreate = [
@@ -162,10 +171,16 @@ function main(): void {
   ];
 
   const conflicts: string[] = [];
+  const skippedOptionalPaths: string[] = [];
 
   for (const relativeSourcePath of sourcePaths) {
     const absoluteSourcePath = path.join(hubRoot, relativeSourcePath);
     const absoluteTargetPath = path.join(targetRepo, relativeSourcePath);
+
+    if (shouldSkipOptionalWorkspaceInstructions(relativeSourcePath, absoluteTargetPath, options.force)) {
+      skippedOptionalPaths.push(path.relative(targetRepo, absoluteTargetPath));
+      continue;
+    }
 
     if (statSync(absoluteSourcePath).isDirectory()) {
       const files = listFilesRecursive(absoluteSourcePath);
@@ -193,6 +208,14 @@ function main(): void {
     process.exit(1);
   }
 
+  if (skippedOptionalPaths.length > 0) {
+    console.warn("Skipping optional workspace instructions because the target repo already has its own file:");
+    for (const skippedPath of skippedOptionalPaths) {
+      console.warn(`- ${skippedPath}`);
+    }
+    console.warn("Use --force if you want to overwrite it.");
+  }
+
   for (const relativeDirPath of directoryPathsToCreate) {
     ensureDirectory(path.join(targetRepo, relativeDirPath), options.dryRun);
   }
@@ -200,6 +223,10 @@ function main(): void {
   for (const relativeSourcePath of sourcePaths) {
     const absoluteSourcePath = path.join(hubRoot, relativeSourcePath);
     const absoluteTargetPath = path.join(targetRepo, relativeSourcePath);
+
+    if (shouldSkipOptionalWorkspaceInstructions(relativeSourcePath, absoluteTargetPath, options.force)) {
+      continue;
+    }
 
     if (options.dryRun) {
       console.log(`[dry-run] copy ${absoluteSourcePath} -> ${absoluteTargetPath}`);

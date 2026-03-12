@@ -92,7 +92,7 @@ This repository is the source of truth. To use the QA hub inside another local r
 - `.github/agents/`
 - `.github/prompts/`
 - `.github/instructions/`
-- `.github/copilot-instructions.md`
+- `.github/copilot-instructions.md` when the target repo does not already have its own file, or when `--force` is used
 - `qa-agent-hub/response/`
 - `qa-agent-hub/examples/`
 - `qa-agent-hub/docs/`
@@ -159,6 +159,7 @@ npm run hub:install -- --target /path/to/target-repo --force
 ### Installer behavior
 
 - The installer stops if hub-managed files already exist with different content.
+- If the target repo already has `.github/copilot-instructions.md`, the installer skips that file by default.
 - Use `--force` to overwrite those files intentionally.
 - Use `--skip-gitignore` if you do not want the installer to modify the target repo `.gitignore`.
 - Use `--dry-run` to preview changes without writing files.
