@@ -1,46 +1,42 @@
-# 🧪 QA Agent Hub
+# QA Agent Hub
 
-Reusable GitHub Copilot agents and prompts to speed up common QA work (bug tickets, QA tasks, test plans, test approaches, manual test cases, and coverage analysis).
+Reusable GitHub Copilot agents, prompts, and shared instructions for common QA work: bug tickets, QA tasks, test plans, test approaches, manual test cases, and coverage analysis.
 
-This repo is meant to be opened in VS Code and used via Copilot Chat's agent and prompt picker.
+This repo is meant to be opened in VS Code and used through Copilot Chat's agent and prompt picker. It is also being structured so the Copilot customization layer can be copied into another repository without dragging generated QA artifacts into that repo's root.
+
+## Architecture
+
+The repo now separates QA customization files from QA project assets.
+
+- `.github/` contains only Copilot-recognized customization files.
+- `qa-agent-hub/` is the dedicated project area for examples, generated artifacts, and future QA-hub documentation.
 
 ## Repository structure
 
-```
+```text
 .github/
-├── agents/                        # Agent definitions (instructions + tools)
-│   ├── jira-bug.agent.md
-│   ├── jira-task.agent.md
-│   ├── test-approach.agent.md
-│   ├── coverage-analysis.agent.md
-│   ├── test-plan.agent.md
-│   └── test-suggestions.agent.md
-├── prompts/                       # Prompt triggers (thin wrappers that invoke agents)
-│   ├── jira/
-│   │   ├── jira-bug.prompt.md
-│   │   ├── jira-task.prompt.md
-│   │   └── test-approach.prompt.md
-│   ├── qa-documentation/
-│   │   ├── coverage-analysis.prompt.md
-│   │   └── test-plan.prompt.md
-│   └── test-suggestions.prompt.md
-└── copilot-instructions.md        # Global Copilot context for this repo
+├── agents/                        # Task-specific agent behavior
+├── prompts/
+│   ├── defect-management/         # Bug, task, and defect-oriented prompts
+│   ├── test-design-planning/      # Test planning, approach, and manual design prompts
+│   ├── analysis-triage/           # Analysis, triage, and release prompts
+│   └── automation-maintenance/    # Automation planning and test-writing prompts
+├── instructions/                  # Reusable guidance shared across agents
+└── copilot-instructions.md        # Minimal workspace-wide defaults
 
-response/                          # Local work log (generated files, not committed)
-├── jira-bug/
-├── jira-task/
-├── test-approach/
-├── coverage-analysis/
-├── test-plan/
-└── test-suggestions/
+qa-agent-hub/
+├── examples/                      # Canonical sample outputs by capability
+├── response/                      # Generated outputs and local work log
+└── docs/                          # QA hub documentation and rollout notes
 ```
 
 ## How it works
 
-Each QA task is backed by two files:
+Each QA flow is built from three layers:
 
-- **Agent** (`.github/agents/<name>.agent.md`) — contains the full system instructions: persona, output format, guidelines, and file-saving rules.
-- **Prompt** (`.github/prompts/**/<name>.prompt.md`) — a thin trigger that routes to the agent via `agent: <Agent Name>` in its frontmatter.
+- **Instructions** in `.github/instructions/` provide cross-cutting guidance such as QA writing style, file naming rules, Jira conventions, and test design standards.
+- **Agents** in `.github/agents/` stay focused on task-specific reasoning and output shape.
+- **Prompts** in `.github/prompts/` are thin triggers that route the chat session into the right agent.
 
 When you invoke a prompt, Copilot Chat switches to the corresponding agent mode automatically.
 
@@ -54,57 +50,51 @@ code .
 
 In VS Code:
 
-1. Open **Copilot Chat** (`Ctrl+Alt+I`).
-2. Type `#` and pick a prompt (e.g. `#jira-bug`).
+1. Open Copilot Chat.
+2. Type `#` and pick a prompt such as `#jira-bug`.
 3. Paste the requested input.
 
-Tip: send only the prompt name (e.g. `#jira-bug`) with no input to see the exact format required.
+Tip: send only the prompt name with no additional input to see the exact format required.
 
-## Available agents
+## Current prompt coverage
 
 | Prompt | Agent | Use it for | Minimum input | Output |
 |---|---|---|---|---|
-| `#jira-bug` | Jira Bug | Bug ticket for a defect | What happened / Expected / Steps | Jira-ready bug report |
-| `#jira-task` | Jira Task | QA task (automation/execution/maintenance) | What needs doing / Component / Priority | Jira-ready QA task |
-| `#test-approach` | Test Approach | Short ISTQB-aligned test approach | Jira ticket or feature description | Scope/levels/techniques/env/risks/exit criteria |
-| `#coverage-analysis` | Coverage Analysis | Coverage mapping vs requirements | Requirements list + existing test cases | Coverage table, gaps, recommendations |
-| `#test-plan` | Test Plan | Full QA test plan | Feature/module + brief description | Structured test plan with scope/approach/risks |
-| `#test-suggestions` | Test Suggestions | Manual test cases (table format) | Feature + flows + constraints | Precondition line + Markdown table of tests |
+| `#jira-bug` | Jira Bug | Bug ticket for a defect | What happened / expected result / steps | Jira-ready bug report |
+| `#bulk-jira-bugs` | Bulk Jira Bugs | Multiple bug tickets from issue lists or reports | Issue list, report, or triage notes | Batch bug document with separate tickets |
+| `#jira-task` | Jira Task | QA task for automation, execution, or maintenance | What needs doing / component / priority | Jira-ready QA task |
+| `#root-cause-triage` | Root Cause Triage | Classify likely cause of a failure or issue | Failure summary plus logs or signals | Triage report with likely cause and next steps |
+| `#test-approach` | Test Approach | Short ISTQB-aligned test approach | Jira ticket or feature description | Scope, levels, techniques, environment, risks, exit criteria |
+| `#coverage-analysis` | Coverage Analysis | Coverage mapping against requirements | Requirements list plus existing test cases | Coverage breakdown, gaps, recommendations |
+| `#release-readiness` | Release Readiness | Go, go with risks, or no-go recommendation | Release scope, test status, open risks | Readiness report and follow-up actions |
+| `#automation-gap-analysis` | Automation Gap Analysis | Identify highest-value automation opportunities | Existing manual and automated coverage | Gap analysis and recommended order |
+| `#test-plan` | Test Plan | Full QA test plan | Feature or module plus brief description | Structured test plan |
+| `#test-suggestions` | Test Suggestions | Manual test cases in table form | Feature, flows, constraints | Precondition plus Markdown table of tests |
+| `#exploratory-test-charter` | Exploratory Test Charter | Create a focused exploratory mission | Feature or risk area plus constraints | Time-boxed charter with risks and heuristics |
+| `#write-tests` | Write Tests | Write or update automated tests when repo context exists | Feature or bug plus test framework context | Real test changes or a planning artifact |
 
-## Local response files (work log)
+## Prompt capability folders
 
-When you provide input, the agent will:
+- `.github/prompts/defect-management/` contains prompts for bug and QA task creation.
+- `.github/prompts/test-design-planning/` contains prompts for test approach, test plan, manual test case design, and exploratory charters.
+- `.github/prompts/analysis-triage/` contains prompts for coverage, release decisions, and analysis workflows.
+- `.github/prompts/automation-maintenance/` contains prompts for automation planning and test-writing workflows.
 
-1. Generate the answer in chat.
-2. Create a local Markdown file under `response/<name>/`.
-3. Use a dated filename like `YYYY-MM-DD-<slug>.md`.
+## Generated outputs and examples
 
-The folder structure under `response/` is committed to Git, but generated files inside each folder are ignored (see `.gitignore`).
+- `qa-agent-hub/examples/` is intended for curated, high-quality sample outputs.
+- `qa-agent-hub/response/` is intended for generated local artifacts.
 
-## Add a new agent
+## Add a new capability
 
-1. Create `.github/agents/<name>.agent.md` with the full instructions:
+1. Create or reuse a shared instruction in `.github/instructions/` if the rule applies across multiple agents.
+2. Create `.github/agents/<name>.agent.md` for the task-specific behavior.
+3. Create `.github/prompts/<domain>/<name>.prompt.md` as the prompt trigger.
+4. Add matching example and response folders under `qa-agent-hub/` when that capability is ready for sample or generated outputs.
 
-\`\`\`markdown
----
-name: My Agent Name
-description: One-line description
-tools:
-  - createFile
----
+## Current expansion areas
 
-You are a **Senior QA Engineer**.
-
-...instructions, output format, file output rules...
-\`\`\`
-
-2. Create `.github/prompts/<name>.prompt.md` to invoke it:
-
-\`\`\`markdown
----
-agent: My Agent Name
-description: One-line description
----
-\`\`\`
-
-3. Add a `.gitkeep` to `response/<name>/` and update `.gitignore` with `response/<name>/*`.
+- Defect management
+- Test design and planning
+- Analysis and triage
+- Automation and maintenance

@@ -6,10 +6,5 @@ Thumbs.db
 .idea/
 *.swp
 
-# Generated prompt responses (keep folder structure, ignore generated files)
-response/coverage-analysis/*
-response/jira-bug/*
-response/jira-task/*
-response/test-approach/*
-response/test-plan/*
-response/test-suggestions/*
+# Generated QA hub outputs
+qa-agent-hub/response/**/*.md

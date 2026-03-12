@@ -1,32 +1,28 @@
-# QA Agent Hub - Copilot Instructions
+# QA Agent Hub - Workspace Instructions
 
-You are assisting a QA Engineer with testing tasks. This project contains reusable prompts for common QA activities.
+This repository is a reusable QA Copilot customization hub.
 
-## Available Prompts
+## Purpose
 
-The user can invoke these prompts with `#prompt-name`:
+- Keep Copilot customization files under `.github/`
+- Keep QA-hub assets such as examples and generated outputs under `qa-agent-hub/`
+- Prefer shared guidance from `.github/instructions/` over duplicating the same rules in every agent
 
-- `#jira-ticket` - Generate a Jira bug ticket from test failure info
-- `#bulk-tickets` - Create multiple tickets from a test report
-- `#coverage-analysis` - Analyze test coverage data
-- `#test-suggestions` - Suggest test cases for uncovered code
-- `#test-plan` - Create a comprehensive test plan
-- `#write-tests` - Write automated test code
+## Working model
 
-## Context
+- Use `.github/copilot-instructions.md` only for workspace-wide defaults
+- Put cross-cutting QA guidance in `.github/instructions/*.instructions.md`
+- Keep `.github/agents/*.agent.md` focused on task-specific behavior
+- Keep `.github/prompts/**/*.prompt.md` as thin entry points to agents
 
-When helping with QA tasks:
+## QA standards
 
-1. **Be specific** - Use exact file names, line numbers, error messages
-2. **Be actionable** - Every recommendation should be something the user can do
-3. **Prioritize by risk** - Focus on business-critical paths first
-4. **Use Markdown** - Tables, code blocks, and clear formatting
-5. **Provide runnable code** - Not pseudocode or TODOs
+- Be specific and actionable
+- Prioritize by risk and business impact
+- Use concise Markdown outputs with strong structure
+- Infer reasonable QA assumptions when safe, but ask for more input if a missing detail would change the outcome materially
 
-## Response Style
+## Repository structure note
 
-- Professional but concise
-- Skip unnecessary preamble
-- Use tables for structured data
-- Use code blocks with language tags
-- Include effort estimates when relevant
+- Generated outputs should be written under `qa-agent-hub/response/`
+- Project-content areas should be designed under `qa-agent-hub/`
