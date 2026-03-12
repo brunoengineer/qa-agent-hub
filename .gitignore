@@ -6,5 +6,8 @@ Thumbs.db
 .idea/
 *.swp
 
+# Node
+node_modules/
+
 # Generated QA hub outputs
 qa-agent-hub/response/**/*.md

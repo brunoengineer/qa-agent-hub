@@ -13,7 +13,7 @@ This repository is a reusable QA Copilot customization hub.
 - Use `.github/copilot-instructions.md` only for workspace-wide defaults
 - Put cross-cutting QA guidance in `.github/instructions/*.instructions.md`
 - Keep `.github/agents/*.agent.md` focused on task-specific behavior
-- Keep `.github/prompts/**/*.prompt.md` as thin entry points to agents
+- Keep `.github/prompts/*.prompt.md` as thin entry points to agents
 
 ## QA standards
 

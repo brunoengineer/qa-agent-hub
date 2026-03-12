@@ -16,11 +16,7 @@ The repo now separates QA customization files from QA project assets.
 ```text
 .github/
 ├── agents/                        # Task-specific agent behavior
-├── prompts/
-│   ├── defect-management/         # Bug, task, and defect-oriented prompts
-│   ├── test-design-planning/      # Test planning, approach, and manual design prompts
-│   ├── analysis-triage/           # Analysis, triage, and release prompts
-│   └── automation-maintenance/    # Automation planning and test-writing prompts
+├── prompts/                       # Flat prompt files required by VS Code prompt discovery
 ├── instructions/                  # Reusable guidance shared across agents
 └── copilot-instructions.md        # Minimal workspace-wide defaults
 
@@ -48,6 +44,8 @@ cd qa-agent-hub
 code .
 ```
 
+If you want to install this hub into another local repository, see the installation section below.
+
 In VS Code:
 
 1. Open Copilot Chat.
@@ -73,17 +71,94 @@ Tip: send only the prompt name with no additional input to see the exact format 
 | `#exploratory-test-charter` | Exploratory Test Charter | Create a focused exploratory mission | Feature or risk area plus constraints | Time-boxed charter with risks and heuristics |
 | `#write-tests` | Write Tests | Write or update automated tests when repo context exists | Feature or bug plus test framework context | Real test changes or a planning artifact |
 
-## Prompt capability folders
+## Prompt organization note
 
-- `.github/prompts/defect-management/` contains prompts for bug and QA task creation.
-- `.github/prompts/test-design-planning/` contains prompts for test approach, test plan, manual test case design, and exploratory charters.
-- `.github/prompts/analysis-triage/` contains prompts for coverage, release decisions, and analysis workflows.
-- `.github/prompts/automation-maintenance/` contains prompts for automation planning and test-writing workflows.
+VS Code workspace prompt discovery expects prompt files directly under `.github/prompts/`.
+
+Capability grouping is therefore documented conceptually in this README, while the actual prompt files stay flat so `#prompt-name` continues to work reliably.
 
 ## Generated outputs and examples
 
 - `qa-agent-hub/examples/` is intended for curated, high-quality sample outputs.
 - `qa-agent-hub/response/` is intended for generated local artifacts.
+
+## Install Into Another Repository
+
+This repository is the source of truth. To use the QA hub inside another local repository, clone this hub repo locally and run the installer against the target repo.
+
+### What gets installed into the target repo
+
+- `.github/agents/`
+- `.github/prompts/`
+- `.github/instructions/`
+- `.github/copilot-instructions.md`
+- `qa-agent-hub/response/`
+- `qa-agent-hub/examples/`
+- `qa-agent-hub/docs/`
+
+### What the installer adds to the target repo `.gitignore`
+
+```gitignore
+# QA Agent Hub generated outputs
+qa-agent-hub/response/**/*.md
+```
+
+Do not ignore `.github/` in the target repo. Those files must remain tracked for Copilot discovery to work.
+
+### Prerequisites
+
+- Node.js 18 or later
+- npm
+- A local clone of the target repository
+
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/brunoengineer/qa-agent-hub.git
+cd qa-agent-hub
+npm install
+npm run hub:install -- --target "C:\path\to\target-repo"
+```
+
+Dry run first:
+
+```powershell
+npm run hub:install -- --target "C:\path\to\target-repo" --dry-run
+```
+
+Overwrite existing hub-managed files in the target repo:
+
+```powershell
+npm run hub:install -- --target "C:\path\to\target-repo" --force
+```
+
+### macOS and Linux
+
+```bash
+git clone https://github.com/brunoengineer/qa-agent-hub.git
+cd qa-agent-hub
+npm install
+npm run hub:install -- --target /path/to/target-repo
+```
+
+Dry run first:
+
+```bash
+npm run hub:install -- --target /path/to/target-repo --dry-run
+```
+
+Overwrite existing hub-managed files in the target repo:
+
+```bash
+npm run hub:install -- --target /path/to/target-repo --force
+```
+
+### Installer behavior
+
+- The installer stops if hub-managed files already exist with different content.
+- Use `--force` to overwrite those files intentionally.
+- Use `--skip-gitignore` if you do not want the installer to modify the target repo `.gitignore`.
+- Use `--dry-run` to preview changes without writing files.
 
 ## Add a new capability
 
