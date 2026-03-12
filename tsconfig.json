@@ -10,5 +10,5 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
-  "include": ["scripts/**/*.ts"]
+  "include": ["qa-agent-hub/scripts/**/*.ts"]
 }

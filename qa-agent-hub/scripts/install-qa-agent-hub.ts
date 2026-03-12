@@ -142,7 +142,7 @@ function assertTargetRepo(targetRepo: string): void {
 function main(): void {
   const options = parseArgs(process.argv.slice(2));
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
-  const hubRoot = path.resolve(path.join(scriptDir, ".."));
+  const hubRoot = path.resolve(path.join(scriptDir, "..", ".."));
   const targetRepo = path.resolve(options.targetRepo);
 
   assertTargetRepo(targetRepo);

@@ -21,6 +21,7 @@ The repo now separates QA customization files from QA project assets.
 └── copilot-instructions.md        # Minimal workspace-wide defaults
 
 qa-agent-hub/
+├── scripts/                       # Local installer and maintenance scripts for this hub repo
 ├── examples/                      # Canonical sample outputs by capability
 ├── response/                      # Generated outputs and local work log
 └── docs/                          # QA hub documentation and rollout notes
@@ -95,6 +96,8 @@ This repository is the source of truth. To use the QA hub inside another local r
 - `qa-agent-hub/response/`
 - `qa-agent-hub/examples/`
 - `qa-agent-hub/docs/`
+
+The local installer script itself stays in this source repo under `qa-agent-hub/scripts/` and is not copied into the target repo.
 
 ### What the installer adds to the target repo `.gitignore`
 

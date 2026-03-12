@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Reusable GitHub Copilot QA agent hub installer and customization source",
   "scripts": {
-    "hub:install": "tsx scripts/install-qa-agent-hub.ts"
+    "hub:install": "tsx qa-agent-hub/scripts/install-qa-agent-hub.ts"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",
