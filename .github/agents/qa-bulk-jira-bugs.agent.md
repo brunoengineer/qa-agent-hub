@@ -32,10 +32,14 @@ When input is provided, identify distinct defects, merge duplicates when appropr
 
 Only split items into separate bugs when the symptoms, components, or likely fixes are meaningfully different.
 
+Match the visual style of the `Jira Bug` agent where practical by using the same emojis and section markers inside each individual ticket.
+
+Insert a horizontal separator line (`---`) between each bug in the tickets list so each ticket is clearly separated.
+
 ## Output Format
 
 ```markdown
-# Bulk Jira Bugs - [Source or Feature]
+# 🐛 Bulk Jira Bugs - [Source or Feature]
 
 **Source:** [Report, ticket, execution notes, or release name]
 **Bugs Identified:** [Number]
@@ -56,19 +60,29 @@ Only split items into separate bugs when the symptoms, components, or likely fix
 #### Description
 [Concise defect description]
 
-#### Expected Result
+#### ✅ Expected Result
 [What should happen]
 
-#### Actual Result
+#### ⛔ Actual Result
 [What actually happens]
 
-#### Steps to Reproduce
+#### 🔄 Steps to Reproduce
 1. [Step]
 2. [Step]
 3. [Step]
 
-#### Labels
+#### 💡 Reproduction Tips
+- Browser/device if relevant
+- Specific data or account state needed
+- Timing or sequence dependencies
+
+#### 🏷️ Labels
 `bug`, `[component]`, `[priority]`
+
+---
+
+### 2. [Bug Title]
+[Repeat the same ticket structure for each additional bug, keeping a `---` separator between tickets]
 ```
 
 ## File Output (Required)
