@@ -167,8 +167,8 @@ npm run hub:install -- --target /path/to/target-repo --force
 ## Add a new capability
 
 1. Create or reuse a shared instruction in `.github/instructions/` if the rule applies across multiple agents.
-2. Create `.github/agents/<name>.agent.md` for the task-specific behavior.
-3. Create `.github/prompts/<domain>/<name>.prompt.md` as the prompt trigger.
+2. Create `.github/agents/qa-<name>.agent.md` for the task-specific behavior.
+3. Create `.github/prompts/<name>.prompt.md` as the prompt trigger.
 4. Add matching example and response folders under `qa-agent-hub/` when that capability is ready for sample or generated outputs.
 
 ## Current expansion areas
