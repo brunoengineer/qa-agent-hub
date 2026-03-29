@@ -4,13 +4,29 @@ import { fileURLToPath } from "node:url";
 
 const GENERATED_OUTPUT_IGNORE = "qa-agent-hub/response/**/*.md";
 const GITIGNORE_MARKER_START = "# QA Agent Hub generated outputs";
-const OPTIONAL_WORKSPACE_INSTRUCTIONS_PATH = ".github/copilot-instructions.md";
+const OPTIONAL_COPILOT_INSTRUCTIONS_PATH = ".github/copilot-instructions.md";
+const OPTIONAL_CLAUDE_INSTRUCTIONS_PATH = ".claude/CLAUDE.md";
+
+const COPILOT_SOURCE_PATHS = [
+  ".github/agents",
+  ".github/prompts",
+  ".github/instructions",
+  OPTIONAL_COPILOT_INSTRUCTIONS_PATH,
+];
+
+const CLAUDE_SOURCE_PATHS = [
+  ".claude/commands",
+  OPTIONAL_CLAUDE_INSTRUCTIONS_PATH,
+];
+
+type Tool = "copilot" | "claude" | "both";
 
 type Options = {
   targetRepo: string;
   force: boolean;
   dryRun: boolean;
   skipGitignore: boolean;
+  tool: Tool;
 };
 
 function parseArgs(argv: string[]): Options {
@@ -18,6 +34,7 @@ function parseArgs(argv: string[]): Options {
   let force = false;
   let dryRun = false;
   let skipGitignore = false;
+  let tool: Tool = "both";
 
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
@@ -30,6 +47,25 @@ function parseArgs(argv: string[]): Options {
 
     if (arg.startsWith("--target=")) {
       targetRepo = arg.slice("--target=".length);
+      continue;
+    }
+
+    if (arg === "--tool") {
+      const value = argv[index + 1] ?? "";
+      if (value !== "copilot" && value !== "claude" && value !== "both") {
+        throw new Error(`Invalid --tool value "${value}". Must be copilot, claude, or both.`);
+      }
+      tool = value;
+      index += 1;
+      continue;
+    }
+
+    if (arg.startsWith("--tool=")) {
+      const value = arg.slice("--tool=".length);
+      if (value !== "copilot" && value !== "claude" && value !== "both") {
+        throw new Error(`Invalid --tool value "${value}". Must be copilot, claude, or both.`);
+      }
+      tool = value as Tool;
       continue;
     }
 
@@ -64,11 +100,12 @@ function parseArgs(argv: string[]): Options {
     force,
     dryRun,
     skipGitignore,
+    tool,
   };
 }
 
 function printHelp(): void {
-  console.log(`Usage:\n  npm run hub:install -- --target <path-to-target-repo> [--force] [--dry-run] [--skip-gitignore]\n\nOptions:\n  --target, -t       Path to the target local repository\n  --force            Overwrite existing hub-managed files in the target repo\n  --dry-run          Show what would change without writing files\n  --skip-gitignore   Do not add the QA Agent Hub ignore rule to the target repo\n  --help, -h         Show this help message`);
+  console.log(`Usage:\n  npm run hub:install -- --target <path-to-target-repo> [--tool copilot|claude|both] [--force] [--dry-run] [--skip-gitignore]\n\nOptions:\n  --target, -t       Path to the target local repository\n  --tool             Which tool to install for: copilot, claude, or both (default: both)\n  --force            Overwrite existing hub-managed files in the target repo\n  --dry-run          Show what would change without writing files\n  --skip-gitignore   Do not add the QA Agent Hub ignore rule to the target repo\n  --help, -h         Show this help message`);
 }
 
 function ensureDirectory(dirPath: string, dryRun: boolean): void {
@@ -140,12 +177,15 @@ function assertTargetRepo(targetRepo: string): void {
   }
 }
 
-function shouldSkipOptionalWorkspaceInstructions(
+function shouldSkipOptionalPath(
   relativeSourcePath: string,
   absoluteTargetPath: string,
   force: boolean,
 ): boolean {
-  return relativeSourcePath === OPTIONAL_WORKSPACE_INSTRUCTIONS_PATH && existsSync(absoluteTargetPath) && !force;
+  const isOptional =
+    relativeSourcePath === OPTIONAL_COPILOT_INSTRUCTIONS_PATH ||
+    relativeSourcePath === OPTIONAL_CLAUDE_INSTRUCTIONS_PATH;
+  return isOptional && existsSync(absoluteTargetPath) && !force;
 }
 
 function main(): void {
@@ -156,12 +196,9 @@ function main(): void {
 
   assertTargetRepo(targetRepo);
 
-  const sourcePaths = [
-    ".github/agents",
-    ".github/prompts",
-    ".github/instructions",
-    OPTIONAL_WORKSPACE_INSTRUCTIONS_PATH,
-  ];
+  const sourcePaths: string[] = [];
+  if (options.tool !== "claude") sourcePaths.push(...COPILOT_SOURCE_PATHS);
+  if (options.tool !== "copilot") sourcePaths.push(...CLAUDE_SOURCE_PATHS);
 
   const directoryPathsToCreate = [
     "qa-agent-hub",
@@ -170,6 +207,10 @@ function main(): void {
     "qa-agent-hub/response",
   ];
 
+  if (options.tool !== "copilot") {
+    directoryPathsToCreate.push(".claude", ".claude/commands");
+  }
+
   const conflicts: string[] = [];
   const skippedOptionalPaths: string[] = [];
 
@@ -177,7 +218,7 @@ function main(): void {
     const absoluteSourcePath = path.join(hubRoot, relativeSourcePath);
     const absoluteTargetPath = path.join(targetRepo, relativeSourcePath);
 
-    if (shouldSkipOptionalWorkspaceInstructions(relativeSourcePath, absoluteTargetPath, options.force)) {
+    if (shouldSkipOptionalPath(relativeSourcePath, absoluteTargetPath, options.force)) {
       skippedOptionalPaths.push(path.relative(targetRepo, absoluteTargetPath));
       continue;
     }
@@ -224,7 +265,7 @@ function main(): void {
     const absoluteSourcePath = path.join(hubRoot, relativeSourcePath);
     const absoluteTargetPath = path.join(targetRepo, relativeSourcePath);
 
-    if (shouldSkipOptionalWorkspaceInstructions(relativeSourcePath, absoluteTargetPath, options.force)) {
+    if (shouldSkipOptionalPath(relativeSourcePath, absoluteTargetPath, options.force)) {
       continue;
     }
 
