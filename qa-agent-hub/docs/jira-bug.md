@@ -1,8 +1,9 @@
 # Jira Bug
 
-**Prompt:** `#jira-bug`
-**Agent file:** `.github/agents/qa-jira-bug.agent.md`
-**Prompt file:** `.github/prompts/jira-bug.prompt.md`
+**Copilot prompt:** `#jira-bug` | **Claude Code command:** `/jira-bug`
+**Copilot agent file:** `.github/agents/qa-jira-bug.agent.md`
+**Copilot prompt file:** `.github/prompts/jira-bug.prompt.md`
+**Claude Code command file:** `.claude/commands/jira-bug.md`
 
 ---
 
@@ -12,9 +13,15 @@ Creates a complete, Jira-ready bug ticket from a free-form issue description. Th
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#jira-bug` followed by your issue description.
 3. If you send `#jira-bug` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/jira-bug` followed by your issue description.
+3. If you send `/jira-bug` with no input, the command will ask:
 
 ```
 Please describe the issue:
@@ -23,6 +30,8 @@ Please describe the issue:
 - What did you expect?
 - Steps to reproduce (if known)
 ```
+
+Both tools behave identically: send the command with no input to see the required format.
 
 ## Required Input
 
@@ -92,8 +101,8 @@ A structured Markdown bug ticket containing:
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, specificity, risk-based prioritization, assumptions handling |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename slugs, date format, heading standards |
-| Jira QA Guidance | `.github/instructions/jira.instructions.md` | Severity vs priority, labels, reproduction quality, expected vs actual |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, specificity, risk-based prioritization, assumptions handling |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename slugs, date format, heading standards |
+| Jira QA Guidance | `.github/instructions/jira.instructions.md` | `## Jira QA Guidance` in `.claude/CLAUDE.md` | Severity vs priority, labels, reproduction quality, expected vs actual |

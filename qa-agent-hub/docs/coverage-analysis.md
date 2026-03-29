@@ -1,8 +1,9 @@
 # Coverage Analysis
 
-**Prompt:** `#coverage-analysis`
-**Agent file:** `.github/agents/qa-coverage-analysis.agent.md`
-**Prompt file:** `.github/prompts/coverage-analysis.prompt.md`
+**Copilot prompt:** `#coverage-analysis` | **Claude Code command:** `/coverage-analysis`
+**Copilot agent file:** `.github/agents/qa-coverage-analysis.agent.md`
+**Copilot prompt file:** `.github/prompts/coverage-analysis.prompt.md`
+**Claude Code command file:** `.claude/commands/coverage-analysis.md`
 
 ---
 
@@ -12,9 +13,17 @@ Analyzes test coverage against requirements. Maps test cases to requirement cate
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#coverage-analysis` followed by requirements and test cases.
-3. If you send `#coverage-analysis` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/coverage-analysis` followed by requirements and test cases.
+
+Both tools behave identically: send the command with no input to see the required format.
+
+If you send the command with no input, it will ask:
 
 ```
 Please provide:
@@ -105,8 +114,8 @@ A structured coverage analysis report containing:
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, risk-based prioritization |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename conventions |
-| Test Design Guidance | `.github/instructions/test-design.instructions.md` | ISTQB techniques, traceability, coverage standards |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, risk-based prioritization |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename conventions |
+| Test Design Guidance | `.github/instructions/test-design.instructions.md` | `## Test Design Guidance` in `.claude/CLAUDE.md` | ISTQB techniques, traceability, coverage standards |

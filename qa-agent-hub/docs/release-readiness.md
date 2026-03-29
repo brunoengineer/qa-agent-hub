@@ -1,8 +1,9 @@
 # Release Readiness
 
-**Prompt:** `#release-readiness`
-**Agent file:** `.github/agents/qa-release-readiness.agent.md`
-**Prompt file:** `.github/prompts/release-readiness.prompt.md`
+**Copilot prompt:** `#release-readiness` | **Claude Code command:** `/release-readiness`
+**Copilot agent file:** `.github/agents/qa-release-readiness.agent.md`
+**Copilot prompt file:** `.github/prompts/release-readiness.prompt.md`
+**Claude Code command file:** `.claude/commands/release-readiness.md`
 
 ---
 
@@ -12,9 +13,17 @@ Evaluates release readiness and produces a recommendation of **Go**, **Go with R
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#release-readiness` followed by your release status information.
-3. If you send `#release-readiness` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/release-readiness` followed by your release status information.
+
+Both tools behave identically: send the command with no input to see the required format.
+
+If you send the command with no input, it will ask:
 
 ```
 Please provide:
@@ -89,9 +98,9 @@ A structured readiness report containing:
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, risk-based prioritization |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename conventions |
-| Test Design Guidance | `.github/instructions/test-design.instructions.md` | Coverage standards, risk-based design |
-| Jira QA Guidance | `.github/instructions/jira.instructions.md` | Defect severity, bug management context |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, risk-based prioritization |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename conventions |
+| Test Design Guidance | `.github/instructions/test-design.instructions.md` | `## Test Design Guidance` in `.claude/CLAUDE.md` | Coverage standards, risk-based design |
+| Jira QA Guidance | `.github/instructions/jira.instructions.md` | `## Jira QA Guidance` in `.claude/CLAUDE.md` | Defect severity, bug management context |

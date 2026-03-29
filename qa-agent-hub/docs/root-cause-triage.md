@@ -1,8 +1,9 @@
 # Root Cause Triage
 
-**Prompt:** `#root-cause-triage`
-**Agent file:** `.github/agents/qa-root-cause-triage.agent.md`
-**Prompt file:** `.github/prompts/root-cause-triage.prompt.md`
+**Copilot prompt:** `#root-cause-triage` | **Claude Code command:** `/root-cause-triage`
+**Copilot agent file:** `.github/agents/qa-root-cause-triage.agent.md`
+**Copilot prompt file:** `.github/prompts/root-cause-triage.prompt.md`
+**Claude Code command file:** `.claude/commands/root-cause-triage.md`
 
 ---
 
@@ -12,9 +13,17 @@ Triages a failure or issue into the most likely root-cause category and recommen
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#root-cause-triage` followed by the failure details.
-3. If you send `#root-cause-triage` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/root-cause-triage` followed by the failure details.
+
+Both tools behave identically: send the command with no input to see the required format.
+
+If you send the command with no input, it will ask:
 
 ```
 Please provide:
@@ -101,9 +110,9 @@ A structured triage report containing:
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, risk-based prioritization |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename conventions |
-| Jira QA Guidance | `.github/instructions/jira.instructions.md` | Defect reporting standards |
-| Automation Guidance | `.github/instructions/automation.instructions.md` | Separating product defects from flaky automation, environment, and data issues |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, risk-based prioritization |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename conventions |
+| Jira QA Guidance | `.github/instructions/jira.instructions.md` | `## Jira QA Guidance` in `.claude/CLAUDE.md` | Defect reporting standards |
+| Automation Guidance | `.github/instructions/automation.instructions.md` | `## Automation Guidance` in `.claude/CLAUDE.md` | Separating product defects from flaky automation, environment, and data issues |

@@ -1,8 +1,9 @@
 # Jira Task
 
-**Prompt:** `#jira-task`
-**Agent file:** `.github/agents/qa-jira-task.agent.md`
-**Prompt file:** `.github/prompts/jira-task.prompt.md`
+**Copilot prompt:** `#jira-task` | **Claude Code command:** `/jira-task`
+**Copilot agent file:** `.github/agents/qa-jira-task.agent.md`
+**Copilot prompt file:** `.github/prompts/jira-task.prompt.md`
+**Claude Code command file:** `.claude/commands/jira-task.md`
 
 ---
 
@@ -12,9 +13,17 @@ Creates a QA task ticket for work such as implementing new tests, executing test
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#jira-task` followed by your task description.
-3. If you send `#jira-task` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/jira-task` followed by your task description.
+
+Both tools behave identically: send the command with no input to see the required format.
+
+If you send the command with no input, it will ask:
 
 ```
 Please describe the QA task:
@@ -94,9 +103,9 @@ A structured Markdown task ticket containing:
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, specificity, risk-based prioritization |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename conventions |
-| Jira QA Guidance | `.github/instructions/jira.instructions.md` | Task ticket standards, acceptance criteria, labels |
-| Automation Guidance | `.github/instructions/automation.instructions.md` | Used when task relates to automation or test maintenance |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, specificity, risk-based prioritization |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename conventions |
+| Jira QA Guidance | `.github/instructions/jira.instructions.md` | `## Jira QA Guidance` in `.claude/CLAUDE.md` | Task ticket standards, acceptance criteria, labels |
+| Automation Guidance | `.github/instructions/automation.instructions.md` | `## Automation Guidance` in `.claude/CLAUDE.md` | Used when task relates to automation or test maintenance |

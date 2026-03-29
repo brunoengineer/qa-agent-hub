@@ -1,8 +1,9 @@
 # Bulk Jira Bugs
 
-**Prompt:** `#bulk-jira-bugs`
-**Agent file:** `.github/agents/qa-bulk-jira-bugs.agent.md`
-**Prompt file:** `.github/prompts/bulk-jira-bugs.prompt.md`
+**Copilot prompt:** `#bulk-jira-bugs` | **Claude Code command:** `/bulk-jira-bugs`
+**Copilot agent file:** `.github/agents/qa-bulk-jira-bugs.agent.md`
+**Copilot prompt file:** `.github/prompts/bulk-jira-bugs.prompt.md`
+**Claude Code command file:** `.claude/commands/bulk-jira-bugs.md`
 
 ---
 
@@ -12,9 +13,17 @@ Creates multiple Jira bug tickets from a single source such as triage notes, tes
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#bulk-jira-bugs` followed by your issue list or report.
-3. If you send `#bulk-jira-bugs` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/bulk-jira-bugs` followed by your issue list or report.
+
+Both tools behave identically: send the command with no input to see the required format.
+
+If you send the command with no input, it will ask:
 
 ```
 Please provide:
@@ -97,8 +106,8 @@ Each individual ticket includes: Description, Expected Result, Actual Result, St
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, specificity, risk-based prioritization |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename conventions |
-| Jira QA Guidance | `.github/instructions/jira.instructions.md` | Bug ticket standards, severity, labels |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, specificity, risk-based prioritization |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename conventions |
+| Jira QA Guidance | `.github/instructions/jira.instructions.md` | `## Jira QA Guidance` in `.claude/CLAUDE.md` | Bug ticket standards, severity, labels |

@@ -1,8 +1,9 @@
 # Exploratory Test Charter
 
-**Prompt:** `#exploratory-test-charter`
-**Agent file:** `.github/agents/qa-exploratory-test-charter.agent.md`
-**Prompt file:** `.github/prompts/exploratory-test-charter.prompt.md`
+**Copilot prompt:** `#exploratory-test-charter` | **Claude Code command:** `/exploratory-test-charter`
+**Copilot agent file:** `.github/agents/qa-exploratory-test-charter.agent.md`
+**Copilot prompt file:** `.github/prompts/exploratory-test-charter.prompt.md`
+**Claude Code command file:** `.claude/commands/exploratory-test-charter.md`
 
 ---
 
@@ -12,9 +13,17 @@ Creates a time-boxed exploratory test charter with risks, heuristics, and note-t
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#exploratory-test-charter` followed by the feature or risk area.
-3. If you send `#exploratory-test-charter` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/exploratory-test-charter` followed by the feature or risk area.
+
+Both tools behave identically: send the command with no input to see the required format.
+
+If you send the command with no input, it will ask:
 
 ```
 Please provide:
@@ -93,8 +102,8 @@ A structured charter containing:
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, risk-based prioritization |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename conventions |
-| Test Design Guidance | `.github/instructions/test-design.instructions.md` | ISTQB techniques, exploratory vs deterministic distinction |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, risk-based prioritization |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename conventions |
+| Test Design Guidance | `.github/instructions/test-design.instructions.md` | `## Test Design Guidance` in `.claude/CLAUDE.md` | ISTQB techniques, exploratory vs deterministic distinction |

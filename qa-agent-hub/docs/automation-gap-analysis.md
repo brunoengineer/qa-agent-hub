@@ -1,8 +1,9 @@
 # Automation Gap Analysis
 
-**Prompt:** `#automation-gap-analysis`
-**Agent file:** `.github/agents/qa-automation-gap-analysis.agent.md`
-**Prompt file:** `.github/prompts/automation-gap-analysis.prompt.md`
+**Copilot prompt:** `#automation-gap-analysis` | **Claude Code command:** `/automation-gap-analysis`
+**Copilot agent file:** `.github/agents/qa-automation-gap-analysis.agent.md`
+**Copilot prompt file:** `.github/prompts/automation-gap-analysis.prompt.md`
+**Claude Code command file:** `.claude/commands/automation-gap-analysis.md`
 
 ---
 
@@ -12,9 +13,17 @@ Compares current manual and automated coverage, identifies the most important ga
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#automation-gap-analysis` followed by your coverage information.
-3. If you send `#automation-gap-analysis` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/automation-gap-analysis` followed by your coverage information.
+
+Both tools behave identically: send the command with no input to see the required format.
+
+If you send the command with no input, it will ask:
 
 ```
 Please provide:
@@ -87,9 +96,9 @@ A structured gap analysis containing:
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, risk-based prioritization |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename conventions |
-| Test Design Guidance | `.github/instructions/test-design.instructions.md` | ISTQB techniques, coverage and traceability |
-| Automation Guidance | `.github/instructions/automation.instructions.md` | Maintainability, deterministic tests, selectors, fixtures, scope boundaries |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, risk-based prioritization |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename conventions |
+| Test Design Guidance | `.github/instructions/test-design.instructions.md` | `## Test Design Guidance` in `.claude/CLAUDE.md` | ISTQB techniques, coverage and traceability |
+| Automation Guidance | `.github/instructions/automation.instructions.md` | `## Automation Guidance` in `.claude/CLAUDE.md` | Maintainability, deterministic tests, selectors, fixtures, scope boundaries |

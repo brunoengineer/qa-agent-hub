@@ -1,8 +1,9 @@
 # Test Plan
 
-**Prompt:** `#test-plan`
-**Agent file:** `.github/agents/qa-test-plan.agent.md`
-**Prompt file:** `.github/prompts/test-plan.prompt.md`
+**Copilot prompt:** `#test-plan` | **Claude Code command:** `/test-plan`
+**Copilot agent file:** `.github/agents/qa-test-plan.agent.md`
+**Copilot prompt file:** `.github/prompts/test-plan.prompt.md`
+**Claude Code command file:** `.claude/commands/test-plan.md`
 
 ---
 
@@ -12,9 +13,17 @@ Generates a comprehensive, industry-standard QA Test Plan document for a feature
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#test-plan` followed by the feature or module description.
-3. If you send `#test-plan` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/test-plan` followed by the feature or module description.
+
+Both tools behave identically: send the command with no input to see the required format.
+
+If you send the command with no input, it will ask:
 
 ```
 Please provide:
@@ -78,9 +87,9 @@ A full Test Plan document with 12 sections:
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, risk-based prioritization |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename conventions |
-| Test Design Guidance | `.github/instructions/test-design.instructions.md` | ISTQB techniques, risk-based design, traceability |
-| Jira QA Guidance | `.github/instructions/jira.instructions.md` | Used when input includes Jira workflow or bug-management expectations |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, risk-based prioritization |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename conventions |
+| Test Design Guidance | `.github/instructions/test-design.instructions.md` | `## Test Design Guidance` in `.claude/CLAUDE.md` | ISTQB techniques, risk-based design, traceability |
+| Jira QA Guidance | `.github/instructions/jira.instructions.md` | `## Jira QA Guidance` in `.claude/CLAUDE.md` | Used when input includes Jira workflow or bug-management expectations |

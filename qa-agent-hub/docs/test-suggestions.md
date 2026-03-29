@@ -1,8 +1,9 @@
 # Test Suggestions
 
-**Prompt:** `#test-suggestions`
-**Agent file:** `.github/agents/qa-test-suggestions.agent.md`
-**Prompt file:** `.github/prompts/test-suggestions.prompt.md`
+**Copilot prompt:** `#test-suggestions` | **Claude Code command:** `/test-suggestions`
+**Copilot agent file:** `.github/agents/qa-test-suggestions.agent.md`
+**Copilot prompt file:** `.github/prompts/test-suggestions.prompt.md`
+**Claude Code command file:** `.claude/commands/test-suggestions.md`
 
 ---
 
@@ -12,9 +13,17 @@ Generates 5–20 manual test cases for a feature, aligned with ISTQB test design
 
 ## How to Use
 
+### GitHub Copilot
 1. Open Copilot Chat in VS Code.
 2. Type `#test-suggestions` followed by the feature or requirement.
-3. If you send `#test-suggestions` with no input, the agent will ask:
+
+### Claude Code
+1. Open Claude Code in the project root.
+2. Type `/test-suggestions` followed by the feature or requirement.
+
+Both tools behave identically: send the command with no input to see the required format.
+
+If you send the command with no input, it will ask:
 
 ```
 Please provide:
@@ -70,8 +79,8 @@ A compact deliverable with:
 
 ## Technical Information Sources
 
-| Source | Path | Role |
-|---|---|---|
-| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | QA tone, risk-based prioritization |
-| Documentation Output | `.github/instructions/documentation-output.instructions.md` | Markdown structure, filename conventions |
-| Test Design Guidance | `.github/instructions/test-design.instructions.md` | ISTQB techniques, positive/negative coverage, traceability |
+| Source | Copilot path | Claude Code location | Role |
+|---|---|---|---|
+| QA Core Guidance | `.github/instructions/qa-core.instructions.md` | `## QA Core Guidance` in `.claude/CLAUDE.md` | QA tone, risk-based prioritization |
+| Documentation Output | `.github/instructions/documentation-output.instructions.md` | `## Documentation Output Guidance` in `.claude/CLAUDE.md` | Markdown structure, filename conventions |
+| Test Design Guidance | `.github/instructions/test-design.instructions.md` | `## Test Design Guidance` in `.claude/CLAUDE.md` | ISTQB techniques, positive/negative coverage, traceability |
