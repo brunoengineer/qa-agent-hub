@@ -21,6 +21,7 @@
 | Root Cause Triage | `#root-cause-triage` | `/root-cause-triage` | [root-cause-triage.md](root-cause-triage.md) |
 | Release Readiness | `#release-readiness` | `/release-readiness` | [release-readiness.md](release-readiness.md) |
 | Write Tests | `#write-tests` | `/write-tests` | [write-tests.md](write-tests.md) |
+| PR Review | `#pr-review` | `/pr-review` | [pr-review.md](pr-review.md) |
 
 ---
 
@@ -52,5 +53,6 @@ All agents inherit cross-cutting guidance from shared instruction files. For Cop
 | Root Cause Triage | ✅ | ✅ | | ✅ | ✅ |
 | Release Readiness | ✅ | ✅ | ✅ | ✅ | |
 | Write Tests | ✅ | | ✅ | | ✅ |
+| PR Review | ✅ | ✅ | ✅* | | ✅* |
 
 *✅\* = conditional — used only when context requires it (e.g., automation-related task, Jira ticket input).*
