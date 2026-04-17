@@ -22,6 +22,7 @@
 | Release Readiness | `#release-readiness` | `/release-readiness` | [release-readiness.md](release-readiness.md) |
 | Write Tests | `#write-tests` | `/write-tests` | [write-tests.md](write-tests.md) |
 | PR Review | `#pr-review` | `/pr-review` | [pr-review.md](pr-review.md) |
+| Automation Health Check | `#automation-health-check` | `/automation-health-check` | [automation-health-check.md](automation-health-check.md) |
 
 ---
 
@@ -54,5 +55,6 @@ All agents inherit cross-cutting guidance from shared instruction files. For Cop
 | Release Readiness | ✅ | ✅ | ✅ | ✅ | |
 | Write Tests | ✅ | | ✅ | | ✅ |
 | PR Review | ✅ | ✅ | ✅* | | ✅* |
+| Automation Health Check | ✅ | ✅ | | ✅ | ✅ |
 
 *✅\* = conditional — used only when context requires it (e.g., automation-related task, Jira ticket input).*
