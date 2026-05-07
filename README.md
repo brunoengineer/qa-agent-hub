@@ -100,6 +100,7 @@ Tip: run any command with no arguments to see the required input format.
 | Test Suggestions | `#test-suggestions` | `/test-suggestions` | Manual test cases in table form | Feature, flows, constraints | Precondition plus Markdown table of tests |
 | Exploratory Test Charter | `#exploratory-test-charter` | `/exploratory-test-charter` | Create a focused exploratory mission | Feature or risk area plus constraints | Time-boxed charter with risks and heuristics |
 | Write Tests | `#write-tests` | `/write-tests` | Write or update automated tests when repo context exists | Feature or bug plus test framework context | Real test changes or a planning artifact |
+| Test Stability Check | `#test-stability-check` | `/test-stability-check` | Measure suite stability and flakiness with an approved run plan | Test path or pattern plus optional env / run count | Stability grade, per-test results, failure breakdown, recommendations |
 
 ## Generated outputs and examples
 

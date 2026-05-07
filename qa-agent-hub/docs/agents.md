@@ -23,6 +23,7 @@
 | Write Tests | `#write-tests` | `/write-tests` | [write-tests.md](write-tests.md) |
 | PR Review | `#pr-review` | `/pr-review` | [pr-review.md](pr-review.md) |
 | Automation Health Check | `#automation-health-check` | `/automation-health-check` | [automation-health-check.md](automation-health-check.md) |
+| Test Stability Check | `#test-stability-check` | `/test-stability-check` | [test-stability-check.md](test-stability-check.md) |
 
 ---
 
@@ -56,5 +57,6 @@ All agents inherit cross-cutting guidance from shared instruction files. For Cop
 | Write Tests | ✅ | | ✅ | | ✅ |
 | PR Review | ✅ | ✅ | ✅* | | ✅* |
 | Automation Health Check | ✅ | ✅ | | ✅ | ✅ |
+| Test Stability Check | ✅ | ✅ | ✅ | | ✅ |
 
 *✅\* = conditional — used only when context requires it (e.g., automation-related task, Jira ticket input).*
