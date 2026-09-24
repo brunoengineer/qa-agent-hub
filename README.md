@@ -142,13 +142,23 @@ qa-agent-hub/response/**/*.md
 - npm
 - A local clone of the target repository
 
-### Windows PowerShell
+### One-time setup: install dependencies
 
-```powershell
+The installer runs through [`tsx`](https://github.com/privatenumber/tsx), which is a dev dependency of this repo. Run `npm install` once in the hub repo root before using `npm run hub:install`:
+
+```bash
 git clone https://github.com/brunoengineer/qa-agent-hub.git
 cd qa-agent-hub
 npm install
+```
 
+Verify with `npx tsx --version`. Re-run `npm install` after pulling changes that update `package.json`.
+
+> **Troubleshooting:** `'tsx' is not recognized as an internal or external command` (or `tsx: command not found`) means `node_modules` is missing. Run `npm install` in the hub repo root and try again.
+
+### Windows PowerShell
+
+```powershell
 # Install for both tools (default)
 npm run hub:install -- --target "C:\path\to\target-repo"
 
@@ -162,13 +172,9 @@ npm run hub:install -- --target "C:\path\to\target-repo" --tool copilot
 npm run hub:install -- --target "C:\path\to\target-repo" --dry-run
 ```
 
-### macOS and Linux
+### macOS, Linux, and Git Bash on Windows
 
 ```bash
-git clone https://github.com/brunoengineer/qa-agent-hub.git
-cd qa-agent-hub
-npm install
-
 # Install for both tools (default)
 npm run hub:install -- --target /path/to/target-repo
 
@@ -178,6 +184,8 @@ npm run hub:install -- --target /path/to/target-repo --tool claude
 # Dry run first
 npm run hub:install -- --target /path/to/target-repo --dry-run
 ```
+
+> **Note:** `~` is not expanded inside quotes, so `--target "~/repo"` resolves to a literal `~` folder inside the hub repo. Use `"$HOME/repo"` or an unquoted `~/repo` instead.
 
 ### Installer behavior
 
