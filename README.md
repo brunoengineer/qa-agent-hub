@@ -185,7 +185,7 @@ npm run hub:install -- --target /path/to/target-repo --tool claude
 npm run hub:install -- --target /path/to/target-repo --dry-run
 ```
 
-> **Note:** `~` is not expanded inside quotes, so `--target "~/repo"` resolves to a literal `~` folder inside the hub repo. Use `"$HOME/repo"` or an unquoted `~/repo` instead.
+> **Note:** A leading `~` in `--target` is expanded to your home directory by the installer, so both `--target ~/repo` and `--target "~/repo"` work.
 
 ### Installer behavior
 

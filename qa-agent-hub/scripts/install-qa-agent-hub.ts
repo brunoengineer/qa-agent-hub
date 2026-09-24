@@ -1,4 +1,5 @@
 import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -17,6 +18,11 @@ const COPILOT_SOURCE_PATHS = [
 const CLAUDE_SOURCE_PATHS = [
   ".claude/commands",
   OPTIONAL_CLAUDE_INSTRUCTIONS_PATH,
+];
+
+const SHARED_SOURCE_PATHS = [
+  "qa-agent-hub/docs",
+  "qa-agent-hub/examples",
 ];
 
 type Tool = "copilot" | "claude" | "both";
@@ -166,6 +172,19 @@ function appendGitignoreRule(targetRepo: string, dryRun: boolean): void {
   writeFileSync(gitignorePath, `${normalizedContent}${block}`, "utf8");
 }
 
+// Quoted paths reach the script with a literal "~" because the shell does not expand it.
+function expandHomeDir(inputPath: string): string {
+  if (inputPath === "~") {
+    return homedir();
+  }
+
+  if (inputPath.startsWith("~/") || inputPath.startsWith("~\\")) {
+    return path.join(homedir(), inputPath.slice(2));
+  }
+
+  return inputPath;
+}
+
 function assertTargetRepo(targetRepo: string): void {
   if (!existsSync(targetRepo)) {
     throw new Error(`Target repo does not exist: ${targetRepo}`);
@@ -192,11 +211,11 @@ function main(): void {
   const options = parseArgs(process.argv.slice(2));
   const scriptDir = path.dirname(fileURLToPath(import.meta.url));
   const hubRoot = path.resolve(path.join(scriptDir, "..", ".."));
-  const targetRepo = path.resolve(options.targetRepo);
+  const targetRepo = path.resolve(expandHomeDir(options.targetRepo));
 
   assertTargetRepo(targetRepo);
 
-  const sourcePaths: string[] = [];
+  const sourcePaths: string[] = [...SHARED_SOURCE_PATHS];
   if (options.tool !== "claude") sourcePaths.push(...COPILOT_SOURCE_PATHS);
   if (options.tool !== "copilot") sourcePaths.push(...CLAUDE_SOURCE_PATHS);
 
