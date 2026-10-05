@@ -22,6 +22,7 @@
 | Release Readiness | `#release-readiness` | `/release-readiness` | [release-readiness.md](release-readiness.md) |
 | Write Tests | `#write-tests` | `/write-tests` | [write-tests.md](write-tests.md) |
 | PR Review | `#pr-review` | `/pr-review` | [pr-review.md](pr-review.md) |
+| PR Description | `#pr-description` | `/pr-description` | [pr-description.md](pr-description.md) |
 | Automation Health Check | `#automation-health-check` | `/automation-health-check` | [automation-health-check.md](automation-health-check.md) |
 | Test Stability Check | `#test-stability-check` | `/test-stability-check` | [test-stability-check.md](test-stability-check.md) |
 
@@ -56,6 +57,7 @@ All agents inherit cross-cutting guidance from shared instruction files. For Cop
 | Release Readiness | ✅ | ✅ | ✅ | ✅ | |
 | Write Tests | ✅ | | ✅ | | ✅ |
 | PR Review | ✅ | ✅ | ✅* | | ✅* |
+| PR Description | ✅ | ✅ | | ✅* | ✅* |
 | Automation Health Check | ✅ | ✅ | | ✅ | ✅ |
 | Test Stability Check | ✅ | ✅ | ✅ | | ✅ |
 
