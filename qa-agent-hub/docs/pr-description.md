@@ -19,7 +19,7 @@ Writes a reviewer-ready Pull Request description in Markdown from the repository
 
 ### Claude Code
 1. Open Claude Code in the repository and session where you made the changes.
-2. Type `/pr-description`. Optionally add a ticket ID, a base branch, or notes (e.g. `/pr-description GX-5329 base=develop`).
+2. Type `/pr-description`. Optionally add a ticket ID, a base branch, or notes (e.g. `/pr-description SHOP-1234 base=develop`).
 
 Running it in the same chat session where you made and tested the changes gives the best result. That session holds the test runs, root cause findings, and decisions the agent uses for the Root cause and Verification sections.
 
@@ -51,24 +51,46 @@ The agent classifies the PR and adjusts the sections:
 |---|---|
 | Bug fix | Summary, Root cause, Changes, Verification |
 | Test fix | Summary, Root cause, Changes, Verification |
-| Feature | Summary, Context, Changes, Verification |
-| Refactor | Summary, Changes, Verification (behavior unchanged) |
-| Chore | Summary, Changes, Verification |
+| Feature | Summary, Why, Changes, Verification |
+| Refactor | Summary, Why, Changes, Verification (behavior unchanged) |
+| Chore | Summary, Why, Changes, Verification |
 
 **Notes for reviewers** is added whenever there is something a reviewer must know. Sections that would only hold filler are skipped.
 
 ## Output
 
-A paste-ready PR description containing:
+A paste-ready PR description that fits on one screen for a small PR:
 
-- **H1 title**: `<TICKET-ID>: <Outcome-focused title>`, used as the PR title
-- **Meta line**: ticket, type, and risk with a one-phrase reason
-- **Summary**: what was wrong, what the PR does, and the key insight (max 3 sentences)
-- **Before / After**: observable state with evidence
-- **Root cause** (or **Context** for features): one subsection per cause with its scope, evidence tables, and a structure tree only when structure is the cause. Calls out when the reported cause differs from the real one
-- **Changes**: files touched, what and why, plus an **Unchanged** line that bounds the scope
-- **Verification**: exact command, results table, static checks, and what was **not covered**
-- **Notes for reviewers**: where to look, side effects on shared/prod environments, external dependencies, and an "if it breaks again" hint
+| Part | Content |
+|---|---|
+| **H1 title** | `<TICKET-ID>: <Outcome-focused title>`, used as the PR title |
+| **Meta lines** | Ticket · Type · Risk (with a one-phrase reason), then **Result**: before → after with scope |
+| **Summary** | 2–3 sentences: what was wrong, what the PR does, the key insight. Written to stand alone in notifications and squash commits |
+| **Root cause** (or **Why**) | One bullet per cause with its scope and inline evidence (`old` → `new`, errors, counts). Optional *Reported as / Real cause* table when 3+ tests or flows were affected |
+| **Changes** | A Mermaid flowchart of the files and layers involved (config → fixture → spec → page object → app), with changed and new files highlighted. Then a `File \| Change \| Why` table and an **Unchanged** line |
+| **Verification** | Exact command, a compact result matrix (tests × projects), static checks, evidence links, and **Not covered** |
+| **Notes for reviewers** | At most 4 bullets: shared/prod side effects, external dependencies, review order, rollback/follow-ups, "if it breaks again" |
+
+No DOM, folder, or call-chain trees. The diagram and the diff already show structure.
+
+### Mermaid diagram
+
+Added when the change touches 2+ files or layers, or when one changed file is used by several tests or flows. Skipped for trivial one-file changes and docs-only PRs.
+
+```mermaid
+flowchart LR
+  cfg["playwright.config.ts<br/>desktop + mobile"] --> spec["checkout.spec.ts<br/>4 tests"]
+  spec -- uses --> po["checkoutPage.ts · changed"]:::changed
+  spec -- uses --> helper["cardHelper.ts · new"]:::added
+  po -- selects --> app["payment iframe"]
+  classDef changed stroke:#d97706,stroke-width:3px
+  classDef added stroke:#16a34a,stroke-width:3px,stroke-dasharray:5 3
+```
+
+- At most 10 nodes. File names, not full paths.
+- Changed files: ` · changed` in the label plus an orange border. New files: ` · new` in the label plus a green dashed border. Only the border changes, so the diagram reads well in light and dark themes.
+- Edges are labelled with the relation (`uses`, `selects`, `loads`). Dotted edges mark conditional paths, such as `mobile only`.
+- GitHub and GitLab render Mermaid. Other tools show the code block as text.
 
 The chat response opens with one line naming the branch, base, and change sources found. After the description, it adds a short **Before you post** list of gaps the author must fill (missing ticket ID, files still uncommitted or untracked, unconfirmed inferences, missing test evidence). The list appears in chat only and is not saved to the file.
 

@@ -1,82 +1,60 @@
-# GX-5329: Fix broken Exalogic tests on StarCasino
+# SHOP-1234: Fix broken payment widget tests in checkout
 
-**Ticket:** GX-5329 · **Type:** Test fix · **Risk:** Low (page object only, verified on prod desktop + mobile)
+**Ticket:** SHOP-1234 · **Type:** Test fix · **Risk:** Low (page object only, verified on desktop + mobile)
+**Result:** 4/4 failing (scheduled run 2026-10-05) → 4/4 passing on staging, desktop + mobile
 
-All four Exalogic sportsbook tests were failing on StarCasino with `element(s) not found`. The ticket listed four bad locators, but the real cause was one renamed element around the sportsbook iframe, plus a different default view on mobile. Fixing the iframe selector unblocks all four tests. The inner locators were already correct.
-
-| Before | After |
-|---|---|
-| 4 / 4 failing (scheduled run 2026-10-05) | 4 / 4 passing on prod, desktop + mobile |
+All four payment widget tests in checkout were failing with `element(s) not found`. The ticket blamed four bad locators, but the real cause was one renamed wrapper around the payment iframe, plus a different default tab on mobile. One page object changes. Every inner locator stays as it was.
 
 ## Root cause
 
-### 1. The iframe wrapper was renamed (all 4 tests)
+- **Iframe wrapper renamed (all 4 tests):** every locator enters the widget through `payment-widget_iframe_container>iframe`, which now matches 0 elements. The iframe moved into the open shadow root of the `checkout-payment-widget` element. Playwright CSS pierces open shadow roots, so `checkout-payment-widget iframe` matches 1, and all inner selectors work again.
+- **Mobile opens a different tab (mobile `/checkout` only):** a fresh mobile load opens **Saved cards**, which has no card form. `.card-form` only exists on **New card**. The selector was right, but the test was checking the wrong screen.
 
-Every locator reaches into the sportsbook through the same iframe selector. That selector no longer matched anything, so every check inside the iframe failed, even though the inner elements were still there.
-
-| | Selector | Matches |
+| Test | Reported as | Real cause |
 |---|---|---|
-| Old | `gaming-exalogic_iframe_container>iframe` | 0 |
-| New | `gaming-integrations-exalogic iframe` | 1 |
-
-Current structure on the page:
-
-```
-www.starcasino.it/scommesse
-└─ <gaming-integrations-exalogic>
-   └─ #shadow-root (open)
-      └─ iframe  /api/v1/Gamelauncher?gameId=exalogicSportsbook
-         └─ div#exa-sportAppContainer
-            └─ #sidebar-sx, .swiper-wrapper, .live-matches, #xs_sportMenu ...
-```
-
-The iframe now sits inside the host element's shadow DOM. Playwright CSS selectors pierce open shadow roots, so the new selector works with `frameLocator`. Once the iframe was reachable, every existing inner selector matched.
-
-Each test failed at its first check inside the iframe:
-
-| Test | Ticket said | First check | Real cause |
-|---|---|---|---|
-| Desktop `/scommesse` | Bad locator | `#sidebar-sx` | Wrapper renamed |
-| Desktop `/scommesse-live` | Bad locator | `.icons-slider-container` | Wrapper renamed |
-| Mobile `/scommesse` | Swiper missing | `.swiper-wrapper` | Wrapper renamed + mobile view change |
-| Mobile `/scommesse-live` | Bad locator | `#xs_sportMenu` | Wrapper renamed |
-
-### 2. Mobile opens the Calcio view, not Home Sport (mobile `/scommesse` only)
-
-A fresh mobile load of `/scommesse` opens the **Calcio** view, which has no live matches block. The live block (`.c_68` with `.c_15_5` match rows) only exists on the **Home Sport** view. The selectors were correct, but the test was checking a different screen.
+| Desktop `/checkout` | Bad locator | Wrapper renamed |
+| Desktop `/checkout/express` | Bad locator | Wrapper renamed |
+| Mobile `/checkout` | Card form missing | Wrapper renamed + mobile default tab |
+| Mobile `/checkout/express` | Bad locator | Wrapper renamed |
 
 ## Changes
 
-One file: `pageObjects/sportsbookExalogicPageObject.ts`
+```mermaid
+flowchart LR
+  cfg["playwright.config.ts<br/>desktop + mobile projects"] --> spec["checkout.spec.ts<br/>4 payment widget tests"]
+  fx["auth fixture"] --> spec
+  spec -- uses --> po["checkoutPaymentWidgetPage.ts · changed"]:::changed
+  po -- "selects (new selector)" --> host["checkout-payment-widget<br/>shadow root"]
+  host --> frame["payment iframe<br/>inner selectors unchanged"]
+  po -. "mobile only: tap New card" .-> frame
+  classDef changed stroke:#d97706,stroke-width:3px
+  classDef added stroke:#16a34a,stroke-width:3px,stroke-dasharray:5 3
+```
 
-1. **Point at the new iframe wrapper.** Replaces `gaming-exalogic_iframe_container>iframe` with `gaming-integrations-exalogic iframe`. Fixes all four tests.
-2. **Tap Home Sport on mobile before checking live matches**, inside `verifyLiveMatchesVisible()`. The selector uses the bottom-nav id and icon (same style as the existing betslip button), so it doesn't depend on Italian text.
+| File | Change | Why |
+|---|---|---|
+| `pageObjects/checkoutPaymentWidgetPage.ts` | Iframe selector `payment-widget_iframe_container>iframe` → `checkout-payment-widget iframe` | Fixes all 4 tests |
+| `pageObjects/checkoutPaymentWidgetPage.ts` | `verifyCardFormVisible()` taps **New card** on mobile first, by tab id + icon | Card form only exists on that tab. No dependency on translated text |
 
-**Unchanged:** the spec, the fixtures, every other selector, and the mobile betslip check (`#betslip-overlay` still appears after tapping Schedina).
+**Unchanged:** the spec, the auth fixture, the Playwright config, and every other selector.
 
 ## Verification
 
-Run locally on prod, logged in, one worker:
-
 ```bash
-brand=starcasino environment=prod npx playwright test tests/FrontendE2E/sportsbookLobby.spec.ts -g "Exalogic" --workers=1
+ENV=staging npx playwright test tests/e2e/checkout.spec.ts -g "Payment widget" --workers=1
 ```
 
-| Project | Test | Result | Time |
-|---|---|---|---|
-| starcasino-prod-setup | authenticate | ✅ Pass | 5.0s |
-| starcasino-prod-desktop | Exalogic sportsbook lobby | ✅ Pass | 19.7s |
-| starcasino-prod-desktop | Exalogic Live Betting lobby | ✅ Pass | 13.3s |
-| starcasino-prod-mobile | Exalogic sportsbook lobby | ✅ Pass | 17.4s |
-| starcasino-prod-mobile | Exalogic Live Betting lobby | ✅ Pass | 17.1s |
+| Test | Desktop | Mobile |
+|---|---|---|
+| Payment widget on checkout | ✅ 19.7s | ✅ 17.4s |
+| Payment widget on express checkout | ✅ 13.3s | ✅ 17.1s |
 
-TypeScript and ESLint pass on the changed file.
+Setup project (`authenticate`) passed in 5.0s. TypeScript and ESLint pass on the changed file.
 
-**Not covered:** other brands and non-prod environments. Only StarCasino prod was run.
+**Not covered:** production and WebKit. Only staging was run, on Chromium desktop and mobile emulation.
 
 ## Notes for reviewers
 
-- **Where to look:** the iframe selector and the new Home Sport tap in `verifyLiveMatchesVisible()`. Nothing else in the file changed.
-- **Low footprint on prod:** one worker means two logins in total. No bets or odds selections, only page loads, the Home Sport tap and an empty betslip.
-- **Live data dependency:** the live match checks (desktop, and mobile after the tap) still need live events at run time. That was already the case before this change.
-- **If it breaks again:** if every test fails at its first check inside the iframe, check the wrapper element before changing the inner locators.
+- **Low footprint on shared staging:** 1 worker, 2 logins, no orders placed and no payments submitted.
+- **Third-party dependency:** the widget loads from the payment provider's sandbox. If the sandbox is down, all 4 tests fail at the iframe. That was already true before this change.
+- **If it breaks again:** when every test fails at its first check inside the iframe, check the host element before changing inner locators.
