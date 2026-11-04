@@ -29,40 +29,63 @@ Do NOT explain the prompt. Just show the required input format.
 
 ## Your Task
 
-When input is provided, generate a complete QA task ticket from the request.
+When input is provided, generate a QA task ticket that another QA can pick up and verify without a meeting.
+
+Decide what matters most for this task, rank it by risk, and cut the rest.
+
+## Analysis Process (do not print)
+
+Complete all of this before writing the report. Do not print this section. The limits under **Limits** apply to the report, never to this analysis: think through everything here, then report only what matters most.
+
+- **Task type:** identify the type under **Task Types to Recognize** and what it must focus on.
+- **Context:** expand on what needs to be done and add context about the feature or flow.
+- **Technical approach:** what approach to take, and the files or areas to look at.
+- **Scope:** files and tests to create or modify, test types needed (unit, integration, e2e), and coverage expectations.
+- **Priority:** separate impact from urgency.
+- **Selection:** use these answers to choose the In Scope items and Acceptance Criteria. Print the approach or file list only if the user asks, or if it defines the scope.
 
 ## Output Format
 
+````markdown
+# <Outcome-focused title>
+
+**Priority:** High/Medium/Low · **Estimate:** <X hours/days> · **Component:** <inferred> · **Labels:** `qa`, `<work-type>`, `<component>`
+
+## Description
+<2–3 sentences: what needs doing, why now, and what goes wrong if it is skipped.>
+
+## In Scope
+- <Most important piece of work>
+
+## Out of Scope
+- <Nearby work someone could assume is included>
+
+## Acceptance Criteria
+- [ ] <Observable result another QA can verify>
+
+## Diagram
+```mermaid
+flowchart LR
+  a["What changes"] --> b["What it affects"]
+  b -- checked by --> c["Work in this ticket · in scope"]:::scope
+  classDef scope stroke:#d97706,stroke-width:3px
 ```
-# 🧪 [Brief title describing the QA task]
+````
 
-**Type:** Task
-**Priority:** High/Medium/Low
-**Estimate:** [X hours/days]
-**Component:** (infer from description)
+### Limits
 
----
+- **One idea per bullet, about 20 words at most.** Name at most 3 things in a bullet. Do not pack a list of topics into one bullet to stay under a limit. Keep what matters most and name the rest under **Before you post**.
+- **In Scope, Out of Scope, Acceptance Criteria:** 1–4 bullets each, most important first, one line each.
+- **More than 4 criteria needed:** keep the 4 that matter most and suggest a split under **Before you post**. Do not add bullets.
+- **Length:** about 200 words, not counting the diagram.
+- **Diagram (optional):** add it only when a flow, dependency, or state change explains the task better than text. Otherwise drop the section. Use `flowchart LR`, 10 nodes at most, labels quoted like `id["label"]`.
+- **Labels:** 4 at most.
+- **Leave out** implementation notes and file lists unless the user asks for them or they define the scope.
+- **No decorative emoji** in the title or headings.
 
-### Description
-[Expand on what needs to be done - add context]
+## Chat Response
 
-### 📋 Acceptance Criteria
-- [ ] [Specific criteria 1]
-- [ ] [Specific criteria 2]
-- [ ] [Specific criteria 3]
-...
-
-### 🔧 Implementation Notes
-[Technical guidance - what approach to take, files/areas to look at]
-
-### 📁 Suggested Scope
-- Files/tests to create or modify
-- Test types needed (unit, integration, e2e)
-- Coverage expectations
-
-### 🏷️ Labels
-`qa`, `automation`, `[component]`
-```
+Return the ticket exactly as saved. After it, add a **Before you post** list of at most 4 bullets (chat only, not in the file) with anything the author must confirm: assumptions, a suggested split, or important items you left out. Skip the list when there is nothing to confirm.
 
 ## File Output (Required)
 

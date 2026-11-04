@@ -52,46 +52,23 @@ Please describe the QA task:
 
 ## Output
 
-A structured Markdown task ticket containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Title** with test tube emoji (`🧪`)
-- **Type**, **Priority**, **Estimate**, **Component**
-- **Description** — expanded context
-- **Acceptance Criteria** — testable checklist items
-- **Implementation Notes** — technical guidance and approach
-- **Suggested Scope** — files, test types, and coverage expectations
-- **Labels** — `qa`, `automation`, component tags
+A one-screen ticket of about 200 words, not counting the diagram. See the [example](../examples/jira-task.md). The exact template is in the command file.
 
-### Output Template
+| Part | Content | Limit |
+|---|---|---|
+| **Title** | The outcome of the task | 1 line |
+| **Meta line** | Priority · Estimate · Component · Labels | 4 labels |
+| **Description** | What needs doing, why now, what goes wrong if skipped | 3 sentences |
+| **In Scope** | Most important work first | 4 bullets |
+| **Out of Scope** | Nearby work someone could assume is included | 4 bullets |
+| **Acceptance Criteria** | Observable results another QA can verify | 4 bullets |
+| **Diagram** | Optional Mermaid flow, only when it explains the task better than text | 1 diagram, 10 nodes |
 
-```markdown
-# 🧪 [Brief title describing the QA task]
+When the task needs more than 4 criteria, the agent suggests a split in chat under **Before you post** instead of adding bullets. That list is not saved to the file.
 
-**Type:** Task
-**Priority:** High/Medium/Low
-**Estimate:** [X hours/days]
-**Component:** (infer from description)
-
----
-
-### Description
-[Expand on what needs to be done]
-
-### 📋 Acceptance Criteria
-- [ ] [Specific criteria 1]
-- [ ] [Specific criteria 2]
-
-### 🔧 Implementation Notes
-[Technical guidance - approach, files/areas to look at]
-
-### 📁 Suggested Scope
-- Files/tests to create or modify
-- Test types needed (unit, integration, e2e)
-- Coverage expectations
-
-### 🏷️ Labels
-`qa`, `automation`, `[component]`
-```
+GitHub and GitLab render Mermaid. Jira needs a Mermaid app for that. Without one, the block shows as text.
 
 ## Saved File
 
