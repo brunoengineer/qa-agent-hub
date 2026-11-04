@@ -9,7 +9,7 @@
 
 ## Purpose
 
-Generates 5–20 manual test cases for a feature, aligned with ISTQB test design techniques. The output is a self-contained Markdown table ready for manual execution.
+Generates 6–12 manual test cases, ranked by risk, for a feature, aligned with ISTQB test design techniques. The output is a self-contained Markdown table ready for manual execution.
 
 ## How to Use
 
@@ -43,30 +43,23 @@ Please provide:
 
 ## Output
 
-A compact deliverable with:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-1. **Generic precondition** line at the top
-2. **Markdown table** with columns:
+A self-contained test case table, ranked so that running the first few rows still covers what matters most. See the [example](../examples/test-suggestions.md). The exact format is in the command file.
 
-| Objective | Preconditions | Steps | Expected Result | Technique |
+| Part | Content | Limit |
+|---|---|---|
+| **Generic precondition** | Setup shared by all cases | 1 line |
+| **Table** | Priority, Objective, Preconditions, Steps, Expected Result, Technique | 6–12 rows, 4 steps per case |
+| **Left out** | Cut cases that could matter | 1 line, only when needed |
 
-- Steps are numbered and executable
-- Expected results are measurable and testable
-- No test case IDs — kept minimal
-- Returned inside a Markdown code block
-- No extra commentary unless explicitly requested
+| Priority | Meaning |
+|---|---|
+| **P1** | A failure blocks the flow or shows wrong data |
+| **P2** | Important, but has a workaround |
+| **P3** | Minor |
 
-### Output Template
-
-```markdown
-# Manual Test Cases - <Feature/Requirement>
-
-**Precondition:** [Generic precondition for all test cases]
-
-| Objective | Preconditions | Steps | Expected Result | Technique |
-|---|---|---|---|---|
-| [What is being validated] | [Specific setup] | 1. [Step] 2. [Step] | [Measurable result] | [ISTQB technique] |
-```
+In chat, the output is wrapped in a code block so it can be copied. The saved file has no code block, so the table renders.
 
 ## Saved File
 

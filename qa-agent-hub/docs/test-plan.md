@@ -9,7 +9,7 @@
 
 ## Purpose
 
-Generates a comprehensive, industry-standard QA Test Plan document for a feature or module. Includes 12 structured sections covering everything from objectives through test schedule and communication plan.
+Generates a focused QA Test Plan for a feature or module: objective, scope, approach, risk-ranked priorities, environment, entry and exit criteria, and top risks.
 
 ## How to Use
 
@@ -43,38 +43,27 @@ Please provide:
 
 ## Output
 
-A full Test Plan document with 12 sections:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-| # | Section | Content |
+A focused Test Plan of about 500 words, not counting the diagram. See the [example](../examples/test-plan.md). The exact template is in the command file.
+
+| Part | Content | Limit |
 |---|---|---|
-| 1 | Objective | Purpose and specific goals |
-| 2 | Scope | In scope / out of scope |
-| 3 | Test Approach | Functional, usability, integration, performance, security, methodology |
-| 4 | Test Cases and Priority | WRPN (Weighted Risk Priority Number) table |
-| 5 | Test Environment | Platforms, browsers, network, test data, environment type |
-| 6 | Test Case Design | Positive, negative, boundary, preconditions, traceability |
-| 7 | Bug Management | Tool, logging, classification, resolution, reporting |
-| 8 | Entry and Exit Criteria | Checklist format |
-| 9 | Test Schedule | Task, duration, responsible, start/end table |
-| 10 | Risks and Mitigation | RPN (Risk Priority Number) table |
-| 11 | Deliverables | List of QA artifacts |
-| 12 | Communication Plan | Meeting, purpose, participants, frequency |
-
-### Key Tables in Output
-
-**WRPN Table (Section 4):**
-
-| Test Area | Description | Priority (WRPN) | Factors (L, I, D, E) |
-|---|---|---|---|
+| **Meta line** | Overall Risk · Environment · Timeline (when known) | 1 line |
+| **Objective** | What testing must prove before this ships | 2 sentences |
+| **Scope** | In Scope and Out of Scope | 4 bullets each |
+| **Flow Under Test** | Optional Mermaid flow with the riskiest states marked | 1 diagram, 10 nodes |
+| **Test Approach** | Test type, what it proves, how | 4 rows |
+| **Test Priorities** | WRPN table, highest first | 8 rows |
+| **Environment and Data** | Platforms, browsers, flags, test data | 4 bullets |
+| **Entry and Exit Criteria** | Measurable checklists | 4 bullets each |
+| **Top Risks** | Risk, severity, likelihood, RPN, mitigation | 4 rows |
 
 *WRPN = Likelihood × Impact × Detectability × Effort*
 
-**RPN Table (Section 10):**
-
-| Risk ID | Risk | Severity | Likelihood | RPN | Mitigation |
-|---|---|---|---|---|---|
-
 *RPN = Severity × Likelihood × Detectability*
+
+Bug management, deliverables, and a communication plan rarely change between features, so they are added only when you ask for them.
 
 ## Saved File
 

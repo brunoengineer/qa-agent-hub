@@ -51,56 +51,19 @@ The agent considers these tools when suggesting test environments:
 
 ## Output
 
-A structured test approach with emoji section headers:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- 🎯 **Objective** — what needs validation, referencing acceptance criteria
-- 📋 **Test Scope** — focus, components, exclusions
-- 🔍 **Test Levels** — unit, component, integration, system, usability, performance, regression
-- 🧪 **Test Techniques** — equivalence partitioning, boundary value analysis, positive/negative, exploratory, state transition
-- 🖥️ **Test Environment** — which tools will be used and how
-- 📝 **Test Data Requirements**
-- ⚠️ **Risk-Based Testing** — high/medium priority risks and mitigation
-- ✅ **Exit Criteria** — pass rate, defect threshold, coverage requirement
+A one-screen test approach of about 300 words. See the [example](../examples/test-approach.md). The exact template is in the command file.
 
-### Output Template
-
-```markdown
-# Test Approach - <Feature/Ticket>
-
-🎯 Objective
-[Clear statement of what needs to be validated]
-
-📋 Test Scope
-**Focus:** [Main area]
-**Components:** [Specific components]
-**Exclusions:** [Out of scope]
-
-🔍 Test Levels
-- **Integration Testing:** [...]
-- **System Testing:** [...]
-- **Regression Testing:** [...]
-
-🧪 Test Techniques
-- **Equivalence Partitioning:** [...]
-- **Boundary Value Analysis:** [...]
-- **Positive/Negative Testing:** [...]
-
-🖥️ Test Environment
-[Tools and how they will be used]
-
-📝 Test Data Requirements
-[Specific data needed]
-
-⚠️ Risk-Based Testing
-**High Priority:** [Critical risks]
-**Medium Priority:** [Secondary concerns]
-**Mitigation:** [How risks will be addressed]
-
-✅ Exit Criteria
-- [Pass rate requirement]
-- [Defect severity threshold]
-- [Coverage requirement]
-```
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Overall Risk · Tools used | 1 line |
+| **Objective** | What must be validated | 2 sentences |
+| **Scope** | In Scope and Out of Scope | 4 bullets each |
+| **Test Levels and Techniques** | Only those that apply, and what each checks | 4 rows |
+| **Environment and Data** | Tools and their use, required test data | 4 bullets |
+| **Top Risks** | Risk, priority, mitigation | 4 rows |
+| **Exit Criteria** | Measurable conditions | 4 bullets |
 
 ## Saved File
 

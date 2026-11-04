@@ -28,11 +28,9 @@ Do NOT explain the prompt. Just show the required input format.
 
 ## Your Task
 
-When input is provided, generate a comprehensive test approach.
+When input is provided, read the text and create a short, effective Test Approach, adapted to the feature or ticket.
 
-Read the provided text and create a short, effective Test Approach description.
-
-Use emoji section headers and adapt the template to the feature or ticket context.
+Pick only the test levels and techniques that matter for this feature. Do not list the ones that do not apply.
 
 ## Available Test Environment
 
@@ -43,51 +41,71 @@ When suggesting test environments, consider these tools are available:
 - **Kibana** - Log analysis and monitoring
 - **BO (BackOffice)** - Verify transactions, Freebets, round details, game list
 
+## Analysis Process (do not print)
+
+Complete all of this before writing the report. Do not print this section. The limits under **Limits** apply to the report, never to this analysis: think through everything here, then report only what matters most.
+
+- **Scope:** the main focus, the specific components or modules involved, and what is explicitly out of scope.
+- **Test levels:** consider each and select the relevant ones:
+  - **Unit Testing**
+  - **Component Testing**
+  - **Integration Testing**
+  - **System Testing**
+  - **Usability Testing**
+  - **Performance Testing**
+  - **Regression Testing**
+- **Test techniques:** consider each and select the relevant ones:
+  - **Equivalence Partitioning:** group inputs into valid and invalid partitions
+  - **Boundary Value Analysis:** edge cases to test
+  - **Positive/Negative Testing:** happy path vs error scenarios
+  - **Exploratory Testing**
+  - **State Transition Testing**
+- **Test environment:** which of the available tools will be used, and how.
+- **Test data:** the specific data needed to execute the tests.
+- **Risk-based testing:** high-priority risks that could impact the feature, medium-priority secondary concerns, and how each will be mitigated.
+- **Exit criteria:** pass rate requirement, defect severity threshold, and coverage requirement.
+
 ## Output Format
 
+```markdown
+# Test Approach - <Feature/Ticket>
+
+**Overall Risk:** High/Medium/Low · **Tools:** <Only the tools this approach uses>
+
+> **Objective:** <1–2 sentences: what must be validated, referencing the acceptance criteria if provided.>
+
+## Scope
+
+**In Scope**
+- <Main area or component>
+
+**Out of Scope**
+- <Explicit exclusion>
+
+## Test Levels and Techniques
+
+| Level | Technique | What it checks |
+|---|---|---|
+
+## Environment and Data
+- <Tool and what it is used for, or the test data needed>
+
+## Top Risks
+
+| Risk | Priority | Mitigation |
+|---|---|---|
+
+## Exit Criteria
+- <Measurable pass rate, defect threshold, or coverage requirement>
 ```
-🎯 Objective
-[Clear statement of what needs to be validated, referencing acceptance criteria if provided]
 
-📋 Test Scope
-**Focus:** [Main area of testing]
-**Components:** [Specific components/modules involved]
-**Exclusions:** [What's explicitly out of scope]
+### Limits
 
-🔍 Test Levels
-[Select and describe relevant levels:]
-- **Unit Testing:** [If applicable]
-- **Component Testing:** [If applicable]
-- **Integration Testing:** [If applicable]
-- **System Testing:** [If applicable]
-- **Usability Testing:** [If applicable]
-- **Performance Testing:** [If applicable]
-- **Regression Testing:** [If applicable]
-
-🧪 Test Techniques
-[Select relevant techniques:]
-- **Equivalence Partitioning:** [Group inputs into valid/invalid partitions]
-- **Boundary Value Analysis:** [Edge cases to test]
-- **Positive/Negative Testing:** [Happy path vs error scenarios]
-- **Exploratory Testing:** [If applicable]
-- **State Transition Testing:** [If applicable]
-
-🖥️ Test Environment
-[Specify which tools from the available environment will be used and how]
-
-📝 Test Data Requirements
-[Specific data needed to execute tests]
-
-⚠️ Risk-Based Testing
-**High Priority:** [Critical risks that could impact the feature]
-**Medium Priority:** [Secondary concerns]
-**Mitigation:** [How risks will be addressed]
-
-✅ Exit Criteria
-- [Criterion 1 - e.g., pass rate requirement]
-- [Criterion 2 - e.g., defect severity threshold]
-- [Criterion 3 - e.g., coverage requirement]
-```
+- **One idea per bullet, about 20 words at most.** Name at most 3 things in a bullet. Do not pack a list of topics into one bullet to stay under a limit. Keep what matters most and name the rest in one line: `Left out: <topic>, <topic>.`.
+- **In Scope, Out of Scope, Environment and Data, Exit Criteria:** 1–4 bullets each, most important first, one line each.
+- **Test Levels and Techniques, Top Risks:** 4 rows at most, highest risk first.
+- **Length:** about 300 words.
+- **No decorative emoji** in the title or headings.
 
 ## File Output (Required)
 
@@ -96,6 +114,5 @@ When (and only when) input is provided and you generate the test approach:
 1. Ensure the directory `qa-agent-hub/response/test-approach/` exists (create it if missing).
 2. Create a Markdown file under `qa-agent-hub/response/test-approach/`.
 3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is based on the feature/ticket name inferred from the input (lowercase, hyphenated, max ~60 chars). If you cannot infer a name, use `YYYY-MM-DD-test-approach.md`.
-4. Save the final output as Markdown.
-	- Prepend a single H1 title line at the top of the saved file: `# Test Approach - <Feature/Ticket>`.
+4. Save the final output as Markdown. The file starts with the H1 title from the output format.
 5. Do not create any file when the user provided no input (the "Please provide …" case).

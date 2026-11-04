@@ -18,9 +18,18 @@ Do NOT explain the command. Just show the required input format.
 
 ## Your Task
 
-When `$ARGUMENTS` is provided, generate manual test cases.
+When `$ARGUMENTS` is provided, generate the manual test cases that protect this feature best.
 
-Generate 5 to 20 manual test cases depending on feature complexity. Keep them self-contained, executable, and suitable for manual execution.
+Generate 6 to 12 test cases depending on feature complexity. Keep them self-contained, executable, and suitable for manual execution. Rank them by risk, so that running only the first few still covers what matters most.
+
+## Analysis Process (do not print)
+
+Complete all of this before writing the report. Do not print this section. The limits under **Limits** apply to the report, never to this analysis: think through everything here, then report only what matters most.
+
+- **Candidates:** draft up to 20 candidate test cases, covering happy path, alternate flows, negative scenarios, and edge conditions.
+- **Techniques:** apply equivalence partitioning, boundary value analysis, decision tables, state transitions, and error guessing where they fit.
+- **Ranking:** give each candidate a priority based on customer impact and risk.
+- **Selection:** keep the highest-risk 6 to 12 and name anything important you cut in the **Left out** line.
 
 ## Output Format
 
@@ -28,13 +37,16 @@ Return only:
 1. A **generic precondition** line at the top
 2. A **Markdown table** with columns:
 
-| Objective | Preconditions | Steps | Expected Result | Technique |
+| Priority | Objective | Preconditions | Steps | Expected Result | Technique |
 
-- Steps must be clear, numbered, and executable.
+3. A **Left out** line, only when you cut cases that could matter: `Left out: <topic>, <topic>.`
+
+- Sort rows by Priority: P1 (a failure blocks the flow or shows wrong data), P2 (important but has a workaround), P3 (minor).
+- Steps must be clear, numbered, and executable. Use 4 steps at most per case.
 - Expected results must be measurable and testable.
 - No IDs are needed for each test case.
-- Return the response in a Markdown code block.
-- Return only the precondition line and the Markdown table unless the user explicitly asks for commentary.
+- Return only these parts unless the user explicitly asks for commentary.
+- In chat, wrap the output in a Markdown code block so it can be copied. In the saved file, do not use a code block, so the table renders.
 
 ## File Output (Required)
 
@@ -45,5 +57,5 @@ When (and only when) `$ARGUMENTS` is provided and you generate the manual test c
 3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from the feature/requirement name (lowercase, hyphenated, max ~60 chars). If missing, use `YYYY-MM-DD-manual-test-cases.md`.
 4. Save the Markdown in the file exactly as a runnable `.md` document:
 	- The saved file must start with an H1 title line: `# Manual Test Cases - <Feature/Requirement>`.
-	- Then include the same precondition line and the same table you returned to the user (do not add extra sections).
+	- Then include the same precondition line, table, and Left out line you returned to the user, without the code block (do not add extra sections).
 5. Do not create any file when `$ARGUMENTS` was empty (the "Please provide …" case).

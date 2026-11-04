@@ -43,54 +43,19 @@ Please provide:
 
 ## Output
 
-A structured charter containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Mission** — what the session is trying to learn or break
-- **Timebox** — suggested duration
-- **Focus** — primary focus area
-- **Target Risks** — list of risks to investigate
-- **Test Setup** — environment, accounts, data, tools
-- **Suggested Tours and Heuristics** — exploration strategies
-- **Charter Scenarios** — numbered scenarios to try
-- **What to Capture** — observations, logs, screenshots, metrics
-- **Exit Conditions** — when to stop or escalate
+A one-screen charter of about 250 words that a QA can run straight away. See the [example](../examples/exploratory-test-charter.md). The exact template is in the command file.
 
-### Output Template
-
-```markdown
-# Exploratory Test Charter - [Feature or Risk Area]
-
-**Mission:** [What the session is trying to learn or break]
-**Timebox:** [Suggested timebox]
-**Focus:** [Primary focus area]
-
-## Target Risks
-- [Risk]
-- [Risk]
-
-## Test Setup
-- [Environment]
-- [Accounts, data, or devices]
-- [Required tools or observability]
-
-## Suggested Tours and Heuristics
-- [Tour or heuristic]
-- [Tour or heuristic]
-
-## Charter Scenarios
-1. [Scenario]
-2. [Scenario]
-3. [Scenario]
-
-## What to Capture
-- [Observation type]
-- [Logs, screenshots, or metrics]
-- [Unexpected behavior, inconsistencies, or dead ends]
-
-## Exit Conditions
-- [When to stop or escalate]
-- [What constitutes a useful result]
-```
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Timebox · Focus | 1 line |
+| **Mission** | What the session is trying to learn or break | 1 sentence |
+| **Target Risks** | Risks most likely to hurt users | 4 bullets |
+| **Setup** | Environment, accounts, data, devices, tools | 4 bullets |
+| **Scenarios** | Each one names its tour or heuristic | 4 scenarios |
+| **What to Capture** | Evidence to collect | 4 bullets |
+| **Stop When** | When to stop or escalate | 4 bullets |
 
 ## Saved File
 

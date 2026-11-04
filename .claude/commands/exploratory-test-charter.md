@@ -20,44 +20,50 @@ Do NOT explain the command. Just show the required input format.
 
 When `$ARGUMENTS` is provided, generate a practical exploratory charter that helps a QA execute a focused session.
 
+## Analysis Process (do not print)
+
+Complete all of this before writing the report. Do not print this section. The limits under **Limits** apply to the report, never to this analysis: think through everything here, then report only what matters most.
+
+- **Mission:** what the session is trying to learn or break, and the primary focus.
+- **Risks:** list the likely risks, then rank them by user impact.
+- **Setup:** environment; accounts, data, or devices; required tools or observability.
+- **Tours and heuristics:** choose the ones that best fit the target risks.
+- **Scenarios:** turn each chosen tour or heuristic into something a tester can do.
+- **What to capture:** observation types; logs, screenshots, or metrics; unexpected behavior, inconsistencies, or dead ends.
+- **Exit conditions:** when to stop or escalate, and what constitutes a useful result.
+
 ## Output Format
 
 ```markdown
-# Exploratory Test Charter - [Feature or Risk Area]
+# Exploratory Test Charter - <Feature or Risk Area>
 
-**Mission:** [What the session is trying to learn or break]
-**Timebox:** [Suggested timebox]
-**Focus:** [Primary focus area]
+**Timebox:** <Suggested timebox> · **Focus:** <Primary focus area>
+
+> **Mission:** <One sentence: what the session is trying to learn or break.>
 
 ## Target Risks
-- [Risk]
-- [Risk]
-- [Risk]
+- <Risk most likely to hurt users>
 
-## Test Setup
-- [Environment]
-- [Accounts, data, or devices]
-- [Required tools or observability]
+## Setup
+- <Environment, accounts, data, devices, or tools>
 
-## Suggested Tours and Heuristics
-- [Tour or heuristic]
-- [Tour or heuristic]
-- [Tour or heuristic]
-
-## Charter Scenarios
-1. [Scenario]
-2. [Scenario]
-3. [Scenario]
+## Scenarios
+1. **<Tour or heuristic>:** <What to do and what to watch>
 
 ## What to Capture
-- [Observation type]
-- [Logs, screenshots, or metrics]
-- [Unexpected behavior, inconsistencies, or dead ends]
+- <Evidence: screenshots, payloads, logs, or notes>
 
-## Exit Conditions
-- [When to stop or escalate]
-- [What constitutes a useful result]
+## Stop When
+- <When to stop or escalate>
 ```
+
+### Limits
+
+- **One idea per bullet, about 20 words at most.** Name at most 3 things in a bullet. Do not pack a list of topics into one bullet to stay under a limit. Keep what matters most and name the rest in one line: `Left out: <topic>, <topic>.`.
+- **Every list:** 1–4 items, most important first, one line each.
+- **Scenarios:** name the tour or heuristic on the scenario that uses it, rather than listing them separately.
+- **Length:** about 250 words.
+- **No decorative emoji** in the title or headings.
 
 ## File Output (Required)
 
