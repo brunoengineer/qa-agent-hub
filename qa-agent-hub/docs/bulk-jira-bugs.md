@@ -43,58 +43,18 @@ Please provide:
 
 ## Output
 
-A batch document containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Summary table** — all identified bugs with proposed title, priority, component, and reason to separate
-- **Individual tickets** — each using the same visual style as the Jira Bug agent (emojis, section markers)
-- **Horizontal separators** between each ticket for clear visual boundaries
+A batch document with one short summary and compact tickets of about 120 words each, ordered by priority. See the [example](../examples/bulk-jira-bugs.md). The exact template is in the command file.
 
-Each individual ticket includes: Description, Expected Result, Actual Result, Steps to Reproduce, Reproduction Tips, and Labels.
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Source · Bugs · Environment | 1 line |
+| **Summary** | What the batch shows, the most urgent bug, what was merged | 2 sentences |
+| **Summary table** | Title, Priority, Component | 1 row per bug |
+| **Each ticket** | Meta line, description, steps, expected, actual, scope, acceptance criteria | 6 steps, 4 criteria |
 
-### Output Template
-
-```markdown
-# 🐛 Bulk Jira Bugs - [Source or Feature]
-
-**Source:** [Report, ticket, execution notes, or release name]
-**Bugs Identified:** [Number]
-**Environment:** [If known]
-
-## Summary
-
-| # | Proposed Title | Priority | Component | Reason to Separate |
-|---|---|---|---|---|
-
-## Tickets
-
-### 1. [Bug Title]
-**Priority:** High/Medium/Low
-**Component:** [Area impacted]
-
-#### Description
-[Concise defect description]
-
-#### ✅ Expected Result
-[What should happen]
-
-#### ⛔ Actual Result
-[What actually happens]
-
-#### 🔄 Steps to Reproduce
-1. [Step]
-2. [Step]
-
-#### 💡 Reproduction Tips
-- [Tips]
-
-#### 🏷️ Labels
-`bug`, `[component]`, `[priority]`
-
----
-
-### 2. [Bug Title]
-[Repeat for each additional bug]
-```
+Details missing from the source are written as `Not specified in source` and flagged in chat under **Before you post**. Diagrams are left out of a batch. Use the Jira Bug flow when one bug needs a diagram.
 
 ## Saved File
 

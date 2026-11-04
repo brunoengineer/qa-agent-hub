@@ -44,52 +44,25 @@ Both tools behave identically: send the command with no input to see the require
 
 ## Output
 
-A structured Markdown bug ticket containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Title** with bug emoji (`🐛`)
-- **Priority**, **Environment**, **Component**
-- **Description** — expanded context about the affected feature/flow
-- **Expected Result** / **Actual Result**
-- **Steps to Reproduce** — numbered and executable
-- **Reproduction Tips** — browser, data, timing notes
-- **Screenshots** — suggestions for what to capture
-- **Labels** — `bug`, component, and priority tags
+A one-screen ticket of about 200 words, not counting the diagram. See the [example](../examples/jira-bug.md). The exact template is in the command file.
 
-### Output Template
+| Part | Content | Limit |
+|---|---|---|
+| **Title** | The observable problem | 1 line |
+| **Meta line** | Priority · Environment · Component · Labels | 4 labels |
+| **Description** | What is wrong, who is affected, why it matters | 2 sentences |
+| **Steps to Reproduce** | Preconditions when needed, then numbered steps | 6 steps |
+| **Expected vs Actual** | One line each, with the exact error text | 2 lines |
+| **In Scope** | What the fix must cover | 4 bullets |
+| **Out of Scope** | Related behavior this ticket does not change | 4 bullets |
+| **Acceptance Criteria** | Observable results that prove the fix | 4 bullets |
+| **Diagram** | Optional Mermaid flow when the failure crosses components or depends on state | 1 diagram, 10 nodes |
 
-```markdown
-# 🐛 [Brief title describing the bug]
+Evidence to attach (screenshots, logs) and assumptions to confirm appear in chat under **Before you post** and are not saved to the file.
 
-**Priority:** High/Medium/Low
-**Environment:** (infer or ask if critical)
-**Component:** (infer from description)
-
----
-
-### Description
-[Expand on what the user described]
-
-### ✅ Expected Result
-[What should happen]
-
-### ⛔ Actual Result
-[What actually happens]
-
-### 🔄 Steps to Reproduce
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
-
-### 💡 Reproduction Tips
-- Browser/device if relevant
-- Specific data or account state needed
-
-### 📸 Screenshots
-[Suggest what screenshots would be helpful]
-
-### 🏷️ Labels
-`bug`, `[component]`, `[priority]`
-```
+GitHub and GitLab render Mermaid. Jira needs a Mermaid app for that. Without one, the block shows as text.
 
 ## Saved File
 

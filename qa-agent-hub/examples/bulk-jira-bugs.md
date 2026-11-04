@@ -1,73 +1,64 @@
-# 🐛 Bulk Jira Bugs - My Offers Expanded Offer Validation
+# Bulk Jira Bugs - My Offers Expanded Offer Validation
 
-**Source:** My Offers expanded offer card validation execution notes
-**Bugs Identified:** 2
-**Environment:** My Offers main page and expanded offer card flow; exact browser, device, and release not specified in source notes
+**Source:** My Offers expanded card validation notes · **Bugs:** 2 · **Environment:** Not specified in source
 
-## Summary
+> The notes contain two separate defects: a wrong stepper icon and inconsistent translations. They stay separate because the components and likely fixes differ.
 
-| # | Proposed Title | Priority | Component | Reason to Separate |
-|---|---|---|---|---|
-| 1 | Expanded offer step icon does not match the current campaign step | Medium | My Offers Expanded Card / Stepper | Incorrect icon mapping is a UI behavior defect in the stepper/task area |
-| 2 | Expanded offer text is inconsistent across supported languages | Medium | Localization / My Offers Expanded Card | Language consistency is a separate content and localization defect area |
-
-## Tickets
-
-### 1. Expanded offer step icon does not match the current campaign step
-**Priority:** Medium
-**Environment:** My Offers expanded offer card
-**Component:** My Offers Expanded Card / Stepper
-
-#### Description
-In the expanded offer card, the task description and icon are expected to reflect the current campaign step, such as Opt-in, Deposit, Get Reward, or Wager. During validation, the icon shown for the step was incorrect.
-
-#### ✅ Expected Result
-The task description and icon should update to match the current step purpose and state shown in the campaign flow.
-
-#### ⛔ Actual Result
-The icon displayed for the current campaign step is not correct.
-
-#### 🔄 Steps to Reproduce
-1. Navigate to the My Offers main page.
-2. Open the expanded card for an active campaign.
-3. View the progress stepper and enter each available campaign step.
-4. Check the task description and icon shown for the current step.
-
-#### 💡 Reproduction Tips
-- Validate across multiple campaign states if available, including Opt-in, Deposit, Get Reward, and Wager.
-- Compare the displayed icon with the step label and task wording.
-- Use a campaign that clearly advances through multiple steps to confirm the icon mapping issue.
-
-#### 🏷️ Labels
-`bug`, `my-offers`, `expanded-card`, `stepper`, `medium`
+| # | Title | Priority | Component |
+|---|---|---|---|
+| 1 | Expanded offer step icon does not match the current campaign step | Medium | Expanded card stepper |
+| 2 | Expanded offer text is inconsistent across supported languages | Medium | Localization |
 
 ---
 
-### 2. Expanded offer text is inconsistent across supported languages
-**Priority:** Medium
-**Environment:** My Offers expanded card in different language settings
-**Component:** Localization / My Offers Expanded Card
+## 1. Expanded offer step icon does not match the current campaign step
 
-#### Description
-The expanded offer card content is expected to remain consistent when viewed in different languages. During validation, the multilingual text consistency check failed.
+**Priority:** Medium · **Environment:** Not specified in source · **Component:** Expanded card stepper · **Labels:** `bug`, `my-offers`, `stepper`
 
-#### ✅ Expected Result
-All visible texts in the expanded offer card should be correctly localized and remain consistent with the selected language.
+The icon on the expanded offer card does not match the current campaign step, so players get a wrong signal about what to do next.
 
-#### ⛔ Actual Result
-The text is not consistent across languages in the expanded offer card. The source notes do not specify which strings or languages are affected.
+**Steps to Reproduce**
 
-#### 🔄 Steps to Reproduce
-1. Open the My Offers main page.
-2. Open an expanded offer card.
-3. Change the site or account language to another supported language.
-4. Reopen or refresh the expanded card content.
-5. Compare the visible texts across languages.
+1. Open an active campaign's expanded card from My Offers.
+2. Move through each available step in the stepper.
+3. Compare the icon with the step label and task text.
 
-#### 💡 Reproduction Tips
-- Check headings, CTA labels, task copy, expiry text, and T&C-related content.
-- Compare at least two non-default languages against the default language.
-- Capture which strings remain untranslated, mismatched, or inconsistent once specific languages are identified.
+**Expected:** The icon matches the current step (Opt-in, Deposit, Get Reward, or Wager).
 
-#### 🏷️ Labels
-`bug`, `localization`, `my-offers`, `expanded-card`, `medium`
+**Actual:** The icon shown for the current step is wrong.
+
+**In Scope:** Icon mapping for all four campaign steps.
+
+**Out of Scope:** Stepper layout and task copy.
+
+**Acceptance Criteria**
+
+- [ ] Each campaign step shows its matching icon on the expanded card.
+- [ ] The icon updates when the campaign moves to the next step.
+
+---
+
+## 2. Expanded offer text is inconsistent across supported languages
+
+**Priority:** Medium · **Environment:** Not specified in source · **Component:** Localization · **Labels:** `bug`, `localization`, `my-offers`
+
+Expanded offer card text is inconsistent between languages. The source does not say which strings or languages are affected.
+
+**Steps to Reproduce**
+
+1. Open an expanded offer card from My Offers.
+2. Change the site or account language to another supported language.
+3. Reopen the card and compare the visible text with the default language.
+
+**Expected:** All visible text is translated and matches the selected language.
+
+**Actual:** Text is inconsistent across languages. Affected strings: not specified in source.
+
+**In Scope:** Headings, CTAs, task copy, and T&C text on the expanded card.
+
+**Out of Scope:** Text outside the expanded card.
+
+**Acceptance Criteria**
+
+- [ ] All expanded card text is correct in the default language and two non-default languages.
+- [ ] Changing the language updates the text with no strings left in the old language.

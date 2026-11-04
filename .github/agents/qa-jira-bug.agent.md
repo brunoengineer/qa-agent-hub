@@ -28,48 +28,73 @@ Do NOT explain the prompt. Just show the required input format.
 
 ## Your Task
 
-When input is provided, generate a complete bug ticket from the issue description.
+When input is provided, generate a bug ticket that a developer can reproduce and a QA can verify without asking questions.
+
+Stay close to what was reported. Mark anything you inferred about the environment or the steps as `(assumed)`.
+
+## Analysis Process (do not print)
+
+Complete all of this before writing the report. Do not print this section. The limits under **Limits** apply to the report, never to this analysis: think through everything here, then report only what matters most.
+
+- **Context:** expand on what the user described, and add context about the feature or flow.
+- **Result:** be specific about what should happen and what happens, including any error messages mentioned.
+- **Reproduction factors:** browser or device if relevant, specific data or account state needed, and timing or sequence dependencies.
+- **Evidence that would help:** screenshot of the error message, screenshot of the form state before submission, and console errors (F12 → Console tab).
+- **Priority:** separate impact from urgency. Do not overstate cosmetic issues.
+- **Selection:** reproduction factors that matter go in Preconditions or the steps. Evidence to collect goes under **Before you post**.
 
 ## Output Format
 
+````markdown
+# <Observable problem in one line>
+
+**Priority:** High/Medium/Low · **Environment:** <inferred, or ask if critical> · **Component:** <inferred> · **Labels:** `bug`, `<component>`
+
+## Description
+<1–2 sentences: what is wrong, who is affected, and why it matters.>
+
+## Steps to Reproduce
+**Preconditions:** <account state or data, only when needed>
+
+1. <Step>
+
+## Expected vs Actual
+**Expected:** <What should happen>
+
+**Actual:** <What happens, with the exact error text if there is one>
+
+## In Scope
+- <What the fix must cover: page, flow, device, or state>
+
+## Out of Scope
+- <Related behavior this ticket does not change>
+
+## Acceptance Criteria
+- [ ] <Observable result that proves the fix>
+
+## Diagram
+```mermaid
+flowchart LR
+  a["User action"] --> b["Component"]
+  b --> c["Where it breaks · issue"]:::issue
+  c -.-> d["What the user sees"]
+  classDef issue stroke:#dc2626,stroke-width:3px
 ```
-# 🐛 [Brief title describing the bug]
+````
 
-**Priority:** High/Medium/Low
-**Environment:** (infer or ask if critical)
-**Component:** (infer from description)
+### Limits
 
----
+- **One idea per bullet, about 20 words at most.** Name at most 3 things in a bullet. Do not pack a list of topics into one bullet to stay under a limit. Keep what matters most and name the rest under **Before you post**.
+- **Steps to Reproduce:** 6 steps at most. Merge plain navigation into one step.
+- **In Scope, Out of Scope, Acceptance Criteria:** 1–4 bullets each, most important first, one line each.
+- **Length:** about 200 words, not counting the diagram.
+- **Diagram (optional):** add it only when the failure crosses components or depends on a state change. Skip it for visual and copy bugs. Use `flowchart LR`, 10 nodes at most, labels quoted like `id["label"]`.
+- **Labels:** 4 at most.
+- **No decorative emoji** in the title or headings.
 
-### Description
-[Expand on what the user described - add context about the feature/flow]
+## Chat Response
 
-### ✅ Expected Result
-[What should happen - be specific]
-
-### ⛔ Actual Result
-[What actually happens - include any error messages mentioned]
-
-### 🔄 Steps to Reproduce
-1. [Step 1]
-2. [Step 2]
-3. [Step 3]
-...
-
-### 💡 Reproduction Tips
-- Browser/device if relevant
-- Specific data or account state needed
-- Timing or sequence dependencies
-
-### 📸 Screenshots
-[Suggest what screenshots would be helpful, e.g.:]
-- Screenshot of the error message
-- Screenshot showing the form state before submission
-- Console errors (F12 → Console tab)
-
-### 🏷️ Labels
-`bug`, `[component]`, `[priority]`
-```
+Return the ticket exactly as saved. After it, add a **Before you post** list of at most 4 bullets (chat only, not in the file) with what the author should attach or confirm: screenshots, console or network logs, and `(assumed)` details. Skip the list when there is nothing to add.
 
 ## File Output (Required)
 
