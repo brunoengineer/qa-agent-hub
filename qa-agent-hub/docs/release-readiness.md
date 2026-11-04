@@ -43,50 +43,17 @@ Please provide:
 
 ## Output
 
-A structured readiness report containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Recommendation** — Go / Go with Risks / No-Go
-- **Confidence** — High/Medium/Low
-- **Scope Evaluated** — short scope summary
-- **Test Status Summary** — table with area, status, and notes
-- **Open Defects and Risks** — table with severity, impact, and owner/next step
-- **Coverage Confidence** — assessment of validated vs not validated areas
-- **Blocking Considerations** — blockers or explicit absence of blockers
-- **Recommendation Rationale** — clear explanation
-- **Required Follow-up Actions** — numbered action items
+A one-screen readiness report of about 300 words. The first 3 lines carry the decision. See the [example](../examples/release-readiness.md). The exact template is in the command file.
 
-### Output Template
-
-```markdown
-# Release Readiness - [Release or Feature]
-
-**Recommendation:** Go / Go with Risks / No-Go
-**Confidence:** High/Medium/Low
-**Scope Evaluated:** [Short scope summary]
-
-## Test Status Summary
-
-| Area | Status | Notes |
+| Part | Content | Limit |
 |---|---|---|
-
-## Open Defects and Risks
-
-| Item | Severity | Impact | Owner or Next Step |
-|---|---|---|---|
-
-## Coverage Confidence
-[Assessment of what was and was not validated]
-
-## Blocking Considerations
-- [Blocking issue or statement that none were found]
-
-## Recommendation Rationale
-[Clear explanation for the recommendation]
-
-## Required Follow-up Actions
-1. [Action]
-2. [Action]
-```
+| **Meta line** | Recommendation (Go, Go with Risks, No-Go) · Confidence · Scope | 1 line |
+| **Summary** | Why this recommendation and what could change it | 2 sentences |
+| **Test Status** | Area, status marker, notes, worst first | 8 rows |
+| **Open Risks** | Risk, severity, impact, owner and next step | 4 rows; every Blocker and High always listed |
+| **Required Follow-ups** | Actions, most urgent first | 4 actions |
 
 ## Saved File
 

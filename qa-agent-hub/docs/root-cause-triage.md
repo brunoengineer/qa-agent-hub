@@ -56,49 +56,18 @@ The agent classifies into one primary category:
 
 ## Output
 
-A structured triage report containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Most Likely Category** — primary classification
-- **Confidence** — High/Medium/Low
-- **Severity Signal** — High/Medium/Low
-- **Issue Summary**
-- **Evidence** — key signals analyzed
-- **Likely Root Cause** — reasoned explanation
-- **Alternative Hypotheses** — other possible explanations
-- **What to Verify Next** — investigation steps
-- **Recommended Action** — immediate next steps, escalation, ownership
+A one-screen triage report of about 250 words. The first 3 lines give the category, the likely cause, and the next action. See the [example](../examples/root-cause-triage.md). The exact template is in the command file.
 
-### Output Template
-
-```markdown
-# Root Cause Triage - [Issue or Test Name]
-
-**Most Likely Category:** [Category]
-**Confidence:** High/Medium/Low
-**Severity Signal:** High/Medium/Low
-
-## Issue Summary
-[Short summary of the observed problem]
-
-## Evidence
-- [Key signal]
-- [Key signal]
-
-## Likely Root Cause
-[Reasoned explanation of the most likely cause]
-
-## Alternative Hypotheses
-- [Possible secondary explanation]
-
-## What to Verify Next
-1. [Verification step]
-2. [Verification step]
-
-## Recommended Action
-- [Immediate next action]
-- [Escalation or ownership suggestion]
-- [Whether to log a bug, fix a test, or rerun]
-```
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Category · Confidence · Severity | 1 line |
+| **Summary** | Likely cause and the single most useful next action | 2 sentences + 1 action |
+| **Evidence** | Strongest signals, with actual values or log lines | 4 bullets |
+| **Failure Chain** | Optional Mermaid flow when cause and symptom sit in different layers | 1 diagram, 10 nodes |
+| **Other Possibilities** | Each hypothesis and what would confirm or rule it out | 4 bullets |
+| **Next Steps** | Verification first, then what to do about the issue | 4 steps |
 
 ## Saved File
 

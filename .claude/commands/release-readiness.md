@@ -25,40 +25,48 @@ When `$ARGUMENTS` is provided, assess readiness and recommend one of:
 
 Base the recommendation on scope confidence, test evidence, unresolved defects, operational risk, and business impact.
 
+## Analysis Process (do not print)
+
+Complete all of this before writing the report. Do not print this section. The limits under **Limits** apply to the report, never to this analysis: think through everything here, then report only what matters most.
+
+- **Test status:** assess every area in the release, including areas with no evidence.
+- **Coverage confidence:** what was and was not validated, and how much that matters.
+- **Blocking considerations:** each blocking issue, or an explicit statement that none were found.
+- **Risks:** each risk requiring mitigation or monitoring, with its severity, impact, and owner or next step.
+- **Decision factors:** scope confidence, test evidence, unresolved defects, operational risk, and business impact.
+- **Rationale:** a clear explanation for the recommendation. Its core goes in the summary at the top of the report.
+
 ## Output Format
 
 ```markdown
-# Release Readiness - [Release or Feature]
+# Release Readiness - <Release or Feature>
 
-**Recommendation:** Go / Go with Risks / No-Go
-**Confidence:** High/Medium/Low
-**Scope Evaluated:** [Short scope summary]
+**Recommendation:** Go / Go with Risks / No-Go · **Confidence:** High/Medium/Low · **Scope:** <Short scope summary>
 
-## Test Status Summary
+> <1–2 sentences: why this recommendation, and the main gap or condition that could change it.>
+
+## Test Status
 
 | Area | Status | Notes |
 |---|---|---|
 
-## Open Defects and Risks
+## Open Risks
 
-| Item | Severity | Impact | Owner or Next Step |
+| Risk | Severity | Impact | Owner and next step |
 |---|---|---|---|
 
-## Coverage Confidence
-[Assessment of what was and was not validated]
-
-## Blocking Considerations
-- [Blocking issue or explicit statement that none were found]
-- [Risk requiring mitigation or monitoring]
-
-## Recommendation Rationale
-[Clear explanation for the recommendation]
-
-## Required Follow-up Actions
-1. [Action]
-2. [Action]
-3. [Action]
+## Required Follow-ups
+1. <Action, with owner and deadline when known>
 ```
+
+### Limits
+
+- **One idea per bullet, about 20 words at most.** Name at most 3 things in a bullet. Do not pack a list of topics into one bullet to stay under a limit. Keep what matters most and name the rest in one line: `Left out: <topic>, <topic>.`.
+- **Test Status:** 8 rows at most, worst first. Mark each row ✅ Pass, ⚠️ Partial, ❌ Fail, or ⏭️ Not tested. Merge passing areas into one row when their details do not matter.
+- **Open Risks:** 4 rows at most, ordered by severity (Blocker, High, Medium, Low). Always list every Blocker and High, even past the limit. If there are none, write `No blockers found.`
+- **Required Follow-ups:** 1–4 actions, most urgent first.
+- **Length:** about 300 words. Someone who reads only the first 3 lines must know the decision.
+- **No decorative emoji** in the title or headings.
 
 ## File Output (Required)
 
