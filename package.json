@@ -3,9 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Reusable GitHub Copilot QA agent hub installer and customization source",
+  "description": "Reusable GitHub Copilot and Claude Code QA agent hub installer and customization source",
   "scripts": {
-    "hub:install": "tsx qa-agent-hub/scripts/install-qa-agent-hub.ts"
+    "hub:install": "tsx qa-agent-hub/scripts/install-qa-agent-hub.ts",
+    "hub:check": "tsx qa-agent-hub/scripts/check-hub.ts"
   },
   "devDependencies": {
     "@types/node": "^22.13.10",
