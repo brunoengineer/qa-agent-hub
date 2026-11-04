@@ -23,6 +23,7 @@
 | Write Tests | `#write-tests` | `/write-tests` | [write-tests.md](write-tests.md) |
 | PR Review | `#pr-review` | `/pr-review` | [pr-review.md](pr-review.md) |
 | PR Description | `#pr-description` | `/pr-description` | [pr-description.md](pr-description.md) |
+| Slack Review Request | `#slack-review-request` | `/slack-review-request` | [slack-review-request.md](slack-review-request.md) |
 | Automation Health Check | `#automation-health-check` | `/automation-health-check` | [automation-health-check.md](automation-health-check.md) |
 | Test Stability Check | `#test-stability-check` | `/test-stability-check` | [test-stability-check.md](test-stability-check.md) |
 
@@ -58,6 +59,7 @@ All agents inherit cross-cutting guidance from shared instruction files. For Cop
 | Write Tests | ✅ | | ✅ | | ✅ |
 | PR Review | ✅ | ✅ | ✅* | | ✅* |
 | PR Description | ✅ | ✅ | | ✅* | ✅* |
+| Slack Review Request | ✅ | ✅ | | | |
 | Automation Health Check | ✅ | ✅ | | ✅ | ✅ |
 | Test Stability Check | ✅ | ✅ | ✅ | | ✅ |
 

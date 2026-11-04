@@ -54,6 +54,7 @@ const REQUIRED_PARAMETERS: Record<string, string[]> = {
   ],
   "release-readiness": ["Coverage confidence", "Blocking considerations", "mitigation or monitoring", "operational risk", "Rationale"],
   "root-cause-triage": ["Alternative hypotheses", "Verification", "escalation or ownership", "Test Automation Issue", "Requirement Gap"],
+  "slack-review-request": ["The local branch", "The current chat conversation", "Test evidence", "Readiness", "never invent results", "Never send anything to Slack"],
   "test-approach": [
     "Unit Testing",
     "Component Testing",

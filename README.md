@@ -104,6 +104,7 @@ Tip: run any command with no arguments to see the required input format.
 | PR Review | `#pr-review` | `/pr-review` | Approval-risk review of a pull request | PR URL and diff | Verdict and trust score, confirmed issues, ready-to-post comments |
 | Automation Health Check | `#automation-health-check` | `/automation-health-check` | Audit a QA automation codebase | Path to the automation code | Health score, observations, 3 prioritized Jira tasks |
 | PR Description | `#pr-description` | `/pr-description` | Reviewer-ready PR description in Markdown | None. Reads repo changes (committed, pushed or not) and the chat session | Paste-ready PR body: summary, root cause, changes, verification, reviewer notes |
+| Slack Review Request | `#slack-review-request` | `/slack-review-request` | Slack message asking for a PR review | None. Reads the local branch and the chat session | Paste-ready message: what, why, how (including how it was tested) |
 
 ## Report design
 
