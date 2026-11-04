@@ -33,6 +33,20 @@
 - Use tables only when they improve scanning.
 - Do not add filler sections that do not help execution or decision-making.
 
+### Report Design Rules
+
+Every report has the same shape, so a reader can stop as soon as they have what they need. A command's own limits override these defaults.
+
+- **Limits apply to the report, not the analysis.** Complete every step of the Analysis Process first, then choose what goes in the report. A short report must come from a full analysis.
+- **Answer first.** After the H1, write one meta line (`**Field:** value · **Field:** value`), then the verdict or objective in a 1–2 sentence blockquote.
+- **4 items per list at most.** Bullet, numbered, and checklist sections have 1–4 items, most important first, one idea per bullet, about 20 words at most, naming at most 3 things. Do not pack a list of topics into one bullet to stay under the limit.
+- **8 rows per table at most.** Sort worst or riskiest first, and merge rows that say the same thing (for example, all passing areas in one row).
+- **Never cut what blocks a decision.** Blockers, Critical and High findings, and failing tests are always listed, even past a limit.
+- **Name what you cut.** If a cut item could change a decision, add one line under the list: `Left out: <topic>, <topic>.`
+- **1 diagram at most.** Use Mermaid only when a flow, state, or dependency is clearer as a picture: 10 nodes at most, labels quoted like `id["label"]`, highlights that only change the border.
+- **Emoji are status markers only.** Use ✅ ❌ ⚠️ ⏭️ for results. No decorative emoji in titles or headings.
+- **Author to-dos stay in chat.** Unconfirmed assumptions, missing evidence, and split suggestions go in a chat-only **Before you post** list of at most 4 bullets, not in the saved file.
+
 ---
 
 ## Test Design Guidance
@@ -54,8 +68,11 @@
 - Bugs should state expected result, actual result, and reliable reproduction steps.
 - Include environment details only when they help narrow the issue.
 - Acceptance criteria should be specific, testable, and written so another QA can verify them.
-- Labels should reflect capability, component, and work type without becoming noisy.
+- Labels should reflect capability, component, and work type without becoming noisy. Use 4 at most.
 - Cosmetic issues should not be overstated unless they create clear user risk or brand risk.
+- Every ticket has a Description, In Scope, Out of Scope, and Acceptance Criteria. Add a Mermaid diagram only when it explains the issue better than text.
+- In Scope, Out of Scope, and Acceptance Criteria have at most 4 bullets each, most important first.
+- When a ticket needs more than 4 acceptance criteria, suggest splitting it instead of adding bullets.
 
 ---
 
