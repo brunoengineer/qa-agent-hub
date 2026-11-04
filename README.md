@@ -88,20 +88,50 @@ Tip: run any command with no arguments to see the required input format.
 
 | Agent | Copilot prompt | Claude Code command | Use it for | Minimum input | Output |
 |---|---|---|---|---|---|
-| Jira Bug | `#jira-bug` | `/jira-bug` | Bug ticket for a defect | What happened / expected result / steps | Jira-ready bug report |
+| Jira Bug | `#jira-bug` | `/jira-bug` | Bug ticket for a defect | What happened / expected result / steps | Bug ticket: description, steps, expected vs actual, scope, acceptance criteria |
 | Bulk Jira Bugs | `#bulk-jira-bugs` | `/bulk-jira-bugs` | Multiple bug tickets from issue lists or reports | Issue list, report, or triage notes | Batch bug document with separate tickets |
-| Jira Task | `#jira-task` | `/jira-task` | QA task for automation, execution, or maintenance | What needs doing / component / priority | Jira-ready QA task |
+| Jira Task | `#jira-task` | `/jira-task` | QA task for automation, execution, or maintenance | What needs doing / component / priority | QA task: description, scope, acceptance criteria, optional diagram |
 | Root Cause Triage | `#root-cause-triage` | `/root-cause-triage` | Classify likely cause of a failure or issue | Failure summary plus logs or signals | Triage report with likely cause and next steps |
-| Test Approach | `#test-approach` | `/test-approach` | Short ISTQB-aligned test approach | Jira ticket or feature description | Scope, levels, techniques, environment, risks, exit criteria |
-| Coverage Analysis | `#coverage-analysis` | `/coverage-analysis` | Coverage mapping against requirements | Requirements list plus existing test cases | Coverage breakdown, gaps, recommendations |
+| Test Approach | `#test-approach` | `/test-approach` | Short ISTQB-aligned test approach | Jira ticket or feature description | One-screen approach: scope, levels and techniques, data, risks, exit criteria |
+| Coverage Analysis | `#coverage-analysis` | `/coverage-analysis` | Coverage mapping against requirements | Requirements list plus existing test cases | Coverage by category, worst first, and the tests to add first |
 | Release Readiness | `#release-readiness` | `/release-readiness` | Go, go with risks, or no-go recommendation | Release scope, test status, open risks | Readiness report and follow-up actions |
 | Automation Gap Analysis | `#automation-gap-analysis` | `/automation-gap-analysis` | Identify highest-value automation opportunities | Existing manual and automated coverage | Gap analysis and recommended order |
-| Test Plan | `#test-plan` | `/test-plan` | Full QA test plan | Feature or module plus brief description | Structured test plan |
-| Test Suggestions | `#test-suggestions` | `/test-suggestions` | Manual test cases in table form | Feature, flows, constraints | Precondition plus Markdown table of tests |
+| Test Plan | `#test-plan` | `/test-plan` | Focused QA test plan | Feature or module plus brief description | Objective, scope, risk-ranked priorities, entry and exit criteria, top risks |
+| Test Suggestions | `#test-suggestions` | `/test-suggestions` | Manual test cases in table form | Feature, flows, constraints | Precondition plus a risk-ranked table of 6–12 tests |
 | Exploratory Test Charter | `#exploratory-test-charter` | `/exploratory-test-charter` | Create a focused exploratory mission | Feature or risk area plus constraints | Time-boxed charter with risks and heuristics |
 | Write Tests | `#write-tests` | `/write-tests` | Write or update automated tests when repo context exists | Feature or bug plus test framework context | Real test changes or a planning artifact |
-| Test Stability Check | `#test-stability-check` | `/test-stability-check` | Measure suite stability and flakiness with an approved run plan | Test path or pattern plus optional env / run count | Stability grade, per-test results, failure breakdown, recommendations |
+| Test Stability Check | `#test-stability-check` | `/test-stability-check` | Measure suite stability and flakiness with an approved run plan | Test path or pattern plus optional env / run count | Stability grade, unstable tests, failure reasons, recommendations |
+| PR Review | `#pr-review` | `/pr-review` | Approval-risk review of a pull request | PR URL and diff | Verdict and trust score, confirmed issues, ready-to-post comments |
+| Automation Health Check | `#automation-health-check` | `/automation-health-check` | Audit a QA automation codebase | Path to the automation code | Health score, observations, 3 prioritized Jira tasks |
 | PR Description | `#pr-description` | `/pr-description` | Reviewer-ready PR description in Markdown | None. Reads repo changes (committed, pushed or not) and the chat session | Paste-ready PR body: summary, root cause, changes, verification, reviewer notes |
+
+## Report design
+
+A simple report from a full process. Every template separates the two:
+
+- **Analysis Process (not printed):** every parameter, checklist, and prioritization method the agent must work through. Nothing here is limited.
+- **Output Format and Limits (printed):** what reaches the reader, chosen from that analysis.
+
+The shared report rules are in `.claude/CLAUDE.md` and `.github/instructions/documentation-output.instructions.md`:
+
+- **Answer first:** one meta line, then the verdict or objective in 1–2 sentences.
+- **4 items per list, 8 rows per table:** ranked by risk, most important first. Blockers, Critical and High findings, and failing tests are never cut.
+- **1 diagram at most:** Mermaid, only when a flow, state, or dependency is clearer as a picture.
+- **Author to-dos stay in chat:** assumptions to confirm and evidence to attach go in a **Before you post** list, not in the saved file.
+
+Jira tickets have a Description, In Scope, Out of Scope, and Acceptance Criteria, with at most 4 bullets each. Bugs also have Steps to Reproduce and Expected vs Actual.
+
+Each command and agent repeats its own limits in a `### Limits` block, because the installer keeps a target repo's existing `.claude/CLAUDE.md`. GitHub and GitLab render Mermaid. Jira needs a Mermaid app for that, and otherwise shows the block as text.
+
+### Check the hub
+
+Run this after changing a template or an example:
+
+```bash
+npm run hub:check
+```
+
+It fails when a template loses an analysis parameter, when a command and its Copilot agent differ, or when an example breaks the report limits. To remove a parameter on purpose, also remove it from `REQUIRED_PARAMETERS` in `qa-agent-hub/scripts/check-hub.ts`, so the decision is visible in the diff.
 
 ## Generated outputs and examples
 
@@ -202,7 +232,9 @@ npm run hub:install -- --target /path/to/target-repo --dry-run
 2. Create `.github/agents/qa-<name>.agent.md` for the Copilot agent.
 3. Create `.github/prompts/<name>.prompt.md` as the Copilot prompt trigger.
 4. Create `.claude/commands/<name>.md` as the Claude Code slash command.
-5. Add matching example and response folders under `qa-agent-hub/` when that capability is ready for sample or generated outputs.
+5. Add a `## Analysis Process (do not print)` section and an output template with its own `### Limits` block, in both the agent and the command.
+6. Add the analysis parameters to `REQUIRED_PARAMETERS` in `qa-agent-hub/scripts/check-hub.ts`, and run `npm run hub:check`.
+7. Add matching example and response folders under `qa-agent-hub/` when that capability is ready for sample or generated outputs.
 
 ## Current expansion areas
 
