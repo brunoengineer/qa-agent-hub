@@ -62,6 +62,21 @@ When the workspace does not contain the relevant code:
 - Asks for the missing technical context needed to write reliable tests
 - Produces a planning artifact if the user explicitly requests a plan
 
+## Planning Output
+
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
+
+A planning artifact of about 250 words, not counting the skeleton. See the [example](../examples/write-tests.md). The exact template is in the command file.
+
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Framework · Target | 1 line |
+| **Goal** | What these tests protect and why | 2 sentences |
+| **Files** | New or updated files | 4 bullets |
+| **Scenarios** | Scenario and expected result, highest risk first | 8 rows |
+| **Skeleton** | One representative test | 1 test |
+| **Not Covered** | Remaining gaps and dependencies | 4 bullets |
+
 ## Saved File (Planning-Only)
 
 | Property | Value |

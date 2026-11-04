@@ -66,8 +66,8 @@ A paste-ready PR description that fits on one screen for a small PR:
 | **H1 title** | `<TICKET-ID>: <Outcome-focused title>`, used as the PR title |
 | **Meta lines** | Ticket · Type · Risk (with a one-phrase reason), then **Result**: before → after with scope |
 | **Summary** | 2–3 sentences: what was wrong, what the PR does, the key insight. Written to stand alone in notifications and squash commits |
-| **Root cause** (or **Why**) | One bullet per cause with its scope and inline evidence (`old` → `new`, errors, counts). Optional *Reported as / Real cause* table when 3+ tests or flows were affected |
-| **Changes** | A Mermaid flowchart of the files and layers involved (config → fixture → spec → page object → app), with changed and new files highlighted. Then a `File \| Change \| Why` table and an **Unchanged** line |
+| **Root cause** (or **Why**) | At most 4 bullets, one per cause, with its scope and inline evidence (`old` → `new`, errors, counts). Optional *Reported as / Real cause* table when 3+ tests or flows were affected |
+| **Changes** | A Mermaid flowchart of the files and layers involved (config → fixture → spec → page object → app), with changed and new files highlighted. Then a `File \| Change \| Why` table of at most 8 rows and an **Unchanged** line |
 | **Verification** | Exact command, a compact result matrix (tests × projects), static checks, evidence links, and **Not covered** |
 | **Notes for reviewers** | At most 4 bullets: shared/prod side effects, external dependencies, review order, rollback/follow-ups, "if it breaks again" |
 
