@@ -9,7 +9,7 @@
 
 ## Purpose
 
-Measures the stability and flakiness of a targeted set of automated tests. The agent reads the repository to understand the framework, run commands, and environment, proposes a concrete run plan, waits for the user to approve it, executes the tests in the terminal across multiple runs, classifies failures, and produces a stability report with a numeric grade and prioritized recommendations.
+Measures the stability and flakiness of a targeted set of automated tests. The agent reads the repository to understand the framework, run commands, and environment, proposes a concrete run plan, waits for the user to approve it, executes the tests in the terminal across multiple runs, classifies failures, and produces a short stability report with a numeric grade and prioritized recommendations.
 
 ## How to Use
 
@@ -58,19 +58,21 @@ Please provide:
 
 ## Output
 
-A structured stability report containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Stability Grade** — numeric percentage and rating
-- **Run summary** — total tests, runs per test, pass/fail counts, environment, framework, command executed
-- **Repository analysis summary**
-- **Approved run plan recap**
-- **Per-test results table**
-- **Top failure reasons table** (ordered by occurrences)
-- **Flakiness indicators**
-- **Senior QA conclusion**
-- **Prioritized recommendations** (immediate / short-term / structural)
-- **Suggested follow-up tickets**
-- **Artifacts** captured during the run
+A stability report of about 400 words, led by the verdict. See the [example](../examples/test-stability-check.md). The exact template is in the command file.
+
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Stability Grade · Passed executions · Environment · Framework | 1 line |
+| **Summary** | Whether the suite can gate releases, the dominant failure pattern, what would fix it | 3 sentences |
+| **Command** | The exact command executed | 1 code block |
+| **Unstable Tests** | Every test that failed at least once, plus one line counting stable tests | No limit on failures |
+| **Top Failure Reasons** | Reason, category, occurrences, tests, suggested fix | 4 rows |
+| **Recommendations** | Tagged Now, Next, or Later, with category and priority | 4 actions |
+| **Artifacts** | Paths to reports, logs, and traces | 1 line |
+
+The run plan is shown and approved in chat before execution, so the report does not repeat it.
 
 ### Stability Grade Scale
 

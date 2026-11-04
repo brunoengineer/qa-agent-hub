@@ -29,59 +29,49 @@ Do NOT explain the prompt. Just show the required input format.
 
 ## Your Task
 
-When input is provided, analyze the documents and generate a comprehensive test coverage analysis report.
+When input is provided, analyze the documents and report how well the tests cover the requirements.
 
-Categorize requirements, map test cases to those categories, estimate coverage realistically, and identify strengths, critical gaps, and recommended next actions.
+Categorize requirements, map test cases to those categories, estimate coverage realistically, and identify the biggest gaps and what to add first.
+
+## Analysis Process (do not print)
+
+Complete all of this before writing the report. Do not print this section. The limits under **Limits** apply to the report, never to this analysis: think through everything here, then report only what matters most.
+
+- **Categories:** identify the requirement categories, and count the requirements in each.
+- **Mapping:** map every test case to the categories it covers, and note requirements with no test.
+- **Estimates:** estimate coverage per category and overall, using the **Coverage Calculation Guide**. Consider both happy-path and edge-case coverage.
+- **Strengths:** identify the well-covered areas with their percentages.
+- **Critical gaps:** identify the poorly covered areas with their percentages and missing requirement IDs.
+- **Recommendations:** sort every missing test into High, Medium, or Low priority. Report the top ones and name important cuts in a `Left out:` line.
 
 ## Output Format
 
 Return the analysis in this exact structure:
 
 ```markdown
-# Test Coverage Analysis - [Feature Name]
+# Test Coverage Analysis - <Feature Name>
 
-## Coverage Analysis
+**Overall Coverage:** ~XX–XX% (<Rating>) · **Requirements:** <N> · **Test Cases:** <N> · **Date:** YYYY-MM-DD
 
-### Requirements Categories Identified
-[Numbered list of categories]
+> <1–2 sentences: what is safe today, the biggest gap, and what to add first.>
 
-### Test Case Coverage Breakdown
+## Coverage by Category
 
-| Requirement Category | Requirements Count | Test Cases Covering | Coverage % | Notes |
-|---------------------|-------------------|---------------------|------------|-------|
-| ... | ... | ... | ~XX% | ... |
+| Category | Reqs | Tests | Coverage | Gap |
+|---|---|---|---|---|
+| <Worst covered first> | N | N | ~XX% | <What is missing, with requirement IDs when known> |
 
-## Overall Coverage Estimate: **XX-XX%**
-
-### Strengths
-✅ **Well Covered Areas:**
-- [Area] - ~XX% coverage
-- [Area] - ~XX% coverage
-- [Area] - ~XX% coverage
-
-### Critical Gaps
-❌ **Poorly Covered Areas:**
-- [Area] - ~XX% coverage (UC-XXX not covered)
-- [Area] - 0% coverage (UC-XXX, UC-XXX missing)
-- [Area] - ~XX% coverage
-
-## Recommendations
-
-### High Priority
-1. [Critical missing test case]
-2. [Critical missing test case]
-
-### Medium Priority
-1. [Important but not urgent]
-2. [Important but not urgent]
-
-### Low Priority
-1. [Nice-to-have addition]
-
----
-
-**Analysis Date:** YYYY-MM-DD
+## Tests to Add First
+1. **High:** <Missing test and the risk it closes>
 ```
+
+### Limits
+
+- **One idea per bullet, about 20 words at most.** Name at most 3 things in a bullet. Do not pack a list of topics into one bullet to stay under a limit. Keep what matters most and name the rest in one line: `Left out: <topic>, <topic>.`.
+- **Coverage by Category:** 8 rows at most, lowest coverage first. Merge well-covered categories into one row when their details do not matter.
+- **Tests to Add First:** 1–4 items, highest priority first, each tagged **High**, **Medium**, or **Low**.
+- **Length:** about 300 words.
+- **No decorative emoji** in the title or headings.
 
 ## File Output (Required)
 

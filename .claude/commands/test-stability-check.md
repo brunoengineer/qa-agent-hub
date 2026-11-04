@@ -40,10 +40,10 @@ Present a concise **Run Plan** to the user and **wait for explicit approval befo
 - The exact tests in scope (resolved from the user input)
 - The exact command(s) you will execute, including working directory and environment variables
 - Target environment (local / staging / CI-like)
-- Repetition strategy (how many runs and why) — default to 3 runs unless the user input suggests otherwise
-- Expected duration estimate (rough order of magnitude only)
-- Artifacts that will be collected
-- Any prerequisite the user must satisfy first
+- Repetition strategy (how many runs and why) to measure stability — default to 3 runs unless the user input suggests otherwise
+- Expected duration estimate (rough order of magnitude only; do not guess time-of-day)
+- Artifacts that will be collected (reporter output, logs)
+- Any prerequisite the user must satisfy first (e.g., `.env` file, service running, browsers installed)
 
 End the message with a clear approval question, for example:
 
@@ -62,17 +62,17 @@ After explicit approval:
 
 ### Stage 4 — Result analysis
 
-Classify each failure into a likely cause category:
+Classify each failure into a likely cause category. Use these categories:
 
-- **Product Bug**
-- **Flaky / Timing**
-- **Selector / Locator**
-- **Test Data**
-- **Environment**
-- **Test Logic**
-- **Unknown**
+- **Product Bug** — failure points to real product behavior change
+- **Flaky / Timing** — intermittent, timing, race condition, or retry-only-passes
+- **Selector / Locator** — brittle or stale selector, DOM change
+- **Test Data** — seed drift, missing fixture, account state
+- **Environment** — service down, config, network, browser, infra
+- **Test Logic** — incorrect assertion, bad setup/teardown, test bug
+- **Unknown** — insufficient evidence
 
-Compute the **Stability Grade**:
+Compute the **Stability Grade** as:
 
 ```
 Stability % = (passing test executions / total test executions) * 100
@@ -80,83 +80,67 @@ Stability % = (passing test executions / total test executions) * 100
 
 Where one execution = one (test × run) pair across all repetitions.
 
+Then complete this analysis. Do not print it as a section. The limits under **Limits** apply to the report, never to this analysis.
+
+- **Per-test results:** build the full table for every test: runs, passed, failed, pass rate, average duration, and verdict (Stable, Flaky, or Failing).
+- **Failure reasons:** group similar errors under one reason, and order them by occurrence count.
+- **Flakiness indicators:** check for each of these:
+  - Tests passing only on retry
+  - Hard-coded waits or sleeps
+  - Selector strategies that risk drift
+  - Shared mutable state or order dependence
+  - Environment- or data-dependent assertions
+- **Senior QA conclusion:** how trustworthy this suite is right now, what the dominant failure pattern says about engineering practice, and whether this suite should gate releases.
+- **Recommendations:** sort actions into immediate (this sprint), short-term (next 1–2 sprints), and structural (longer-term).
+- **Follow-up tickets:** give each recommendation a concise title, a category, and a priority.
+
 ### Stage 5 — Report
 
 Produce the final report in the exact format below, save it to a file, and present it back to the user.
 
 ## Output Format
 
-```markdown
-# Test Stability Check - [Target Path or Suite Name]
+````markdown
+# Test Stability Check - <Target Path or Suite Name>
 
-**Stability Grade:** XX% (High / Medium / Low / Unstable)
-**Total Tests:** N
-**Runs per Test:** R
-**Total Executions:** N × R
-**Pass / Fail:** P / F
-**Environment:** [Local / Staging / CI-like + relevant config]
-**Framework:** [Detected framework and version]
-**Command Executed:** `…`
+**Stability Grade:** XX% (High/Medium/Low/Unstable) · **Passed:** P of N × R executions · **Environment:** <Environment and key config> · **Framework:** <Framework and version>
 
----
+> <2–3 sentences: can this suite be trusted as a release gate, what the dominant failure pattern is, and what would fix it.>
 
-## 1. Repository Analysis Summary
-- [Framework, language, runner]
-- [Where tests live and how they are organized]
-- [How runs are configured and parameterized]
-- [Reporters and artifacts available]
-- [Notable constraints or prerequisites]
-
-## 2. Run Plan (Approved)
-- **Scope:** [Resolved test list or pattern]
-- **Command:** `…`
-- **Repetitions:** R
-- **Environment:** [Details]
-- **Prerequisites confirmed:** [Yes / list]
-
-## 3. Per-Test Results
-
-| # | Test | Runs | Passed | Failed | Pass Rate | Avg Duration | Verdict |
-|---|---|---|---|---|---|---|---|
-| 1 | … | R | … | … | …% | …s | Stable / Flaky / Failing |
-
-> Verdict guide: **Stable** = 100% pass, **Flaky** = mixed across runs, **Failing** = 0% pass.
-
-## 4. Top Failure Reasons
-
-| # | Failure Reason | Category | Occurrences | Affected Tests | Suggested Fix |
-|---|---|---|---|---|---|
-| 1 | … | Flaky / Timing | N | … | … |
-
-> Order by occurrence count, descending. Group similar errors under a single reason.
-
-## 5. Flakiness Indicators
-- [Tests passing only on retry]
-- [Hard-coded waits or sleeps observed]
-- [Selector strategies that risk drift]
-- [Shared mutable state or order dependence]
-- [Environment- or data-dependent assertions]
-
-## 6. Senior QA Conclusion
-[2–4 sentences from a senior QA perspective.]
-
-## 7. Recommendations
-
-### Immediate (this sprint)
-1. [Action]
-
-### Short-term (next 1–2 sprints)
-1. [Action]
-
-### Structural (longer-term)
-1. [Action]
-
-## 8. Suggested Follow-up Tickets
-- [Concise title — category — priority]
-
-## 9. Artifacts
-- [Path to reporter output, logs, traces, screenshots if captured]
+```bash
+<exact command executed>
 ```
+
+## Unstable Tests
+
+| Test | Passed | Avg Duration | Verdict | Cause |
+|---|---|---|---|---|
+| <Lowest pass rate first> | P/R | …s | Flaky / Failing | <Category> |
+
+Stable: <N> tests passed every run.
+
+## Top Failure Reasons
+
+| Failure reason | Category | Occurrences | Tests | Suggested fix |
+|---|---|---|---|---|
+
+## Recommendations
+1. **Now:** <Action for this sprint> (<Category>, <Priority>)
+2. **Next:** <Action for the next 1–2 sprints> (<Category>, <Priority>)
+3. **Later:** <Structural action> (<Category>, <Priority>)
+
+**Artifacts:** <Paths to reports, logs, and traces>
+````
+
+### Limits
+
+- **One idea per bullet, about 20 words at most.** Name at most 3 things in a bullet. Do not pack a list of topics into one bullet to stay under a limit. Keep what matters most and name the rest in one line: `Left out: <topic>, <topic>.`.
+- **Unstable Tests:** list every test that failed at least once, lowest pass rate first. Summarize stable tests in the single `Stable:` line. Verdict guide: **Flaky** = mixed across runs, **Failing** = 0% pass.
+- **Top Failure Reasons:** 4 rows at most, by occurrence count. Group similar errors under one reason. Put retry masking and hard-coded waits here when they explain a failure.
+- **Recommendations:** 1–4 actions, tagged **Now**, **Next**, or **Later**, most urgent first.
+- **Artifacts:** one line.
+- **Length:** about 400 words. The run plan was already shown in Stage 2, so do not repeat it or the repository analysis.
+- **No decorative emoji** in the title or headings.
 
 ### Stability Grade Scale
 
@@ -173,7 +157,7 @@ When (and only when) `$ARGUMENTS` is provided **and** the user has approved the 
 
 1. Ensure the directory `qa-agent-hub/response/test-stability-check/` exists (create it if missing).
 2. Create a Markdown file under `qa-agent-hub/response/test-stability-check/`.
-3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from the target path or suite name. If unclear, use `YYYY-MM-DD-test-stability-check.md`.
+3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from the target path or suite name (lowercase, hyphenated, max ~60 chars). If unclear, use `YYYY-MM-DD-test-stability-check.md`.
 4. Save the final Markdown report as the file content. Ensure the first line is the H1 title `# Test Stability Check - <target>`.
 5. Do not create any file when `$ARGUMENTS` was empty or when the run plan was not approved.
 
@@ -182,5 +166,5 @@ When (and only when) `$ARGUMENTS` is provided **and** the user has approved the 
 - Never run tests before receiving explicit user approval of the run plan.
 - Never invent commands — derive them from real files in the repository or from the user input.
 - Do not classify a failure as a Product Bug unless evidence in logs or output supports it.
-- Keep the per-test table accurate to the actual execution; do not pad or omit rows.
-- If the suite is too large or too long to run in a single session, propose a representative sample and call that out explicitly.
+- Keep the results accurate to the actual execution. List every test that failed at least once, count the stable ones, and do not pad results.
+- If the suite is too large or too long to run in a single session, propose a representative sample in the run plan and call that out explicitly.

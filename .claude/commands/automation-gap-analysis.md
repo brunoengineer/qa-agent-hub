@@ -22,41 +22,48 @@ When `$ARGUMENTS` is provided, compare current manual and automated coverage, id
 
 Favor repeatable, high-risk, and high-value scenarios over broad but fragile automation.
 
+## Analysis Process (do not print)
+
+Complete all of this before writing the report. Do not print this section. The limits under **Limits** apply to the report, never to this analysis: think through everything here, then report only what matters most.
+
+- **Current state:** summarize existing manual and automated coverage.
+- **Coverage matrix:** assess every area for manual coverage, automated coverage, gap, and risk, including areas with no gap.
+- **Candidates:** identify the best automation candidates and why each matters. Favor repeatable, high-risk, and high-value scenarios.
+- **Order:** work out the implementation steps and their sequence.
+- **Dependencies and blockers:** dependencies, blockers, and missing test data, selectors, or environment needs.
+- **Out of scope for now:** low-value or unstable scenarios, and manual-only scenarios.
+
 ## Output Format
 
 ```markdown
-# Automation Gap Analysis - [Feature or Scope]
+# Automation Gap Analysis - <Feature or Scope>
 
-**Automation Readiness:** High/Medium/Low
-**Primary Goal:** [Why automation is needed here]
+**Readiness:** High/Medium/Low · **Goal:** <Why automation is needed here>
 
-## Current State
-[Short summary of existing manual and automated coverage]
+> **Automate first:** <The top candidate, and why it comes first, in 1–2 sentences.>
 
-## Coverage Matrix
+## Coverage Gaps
 
-| Area | Manual Coverage | Automated Coverage | Gap | Risk |
+| Area | Manual | Automated | Gap | Risk |
 |---|---|---|---|---|
 
-## Best Automation Candidates
-1. [Candidate and why it matters]
-2. [Candidate and why it matters]
-3. [Candidate and why it matters]
-
 ## Recommended Order
-1. [First implementation step]
-2. [Second implementation step]
-3. [Third implementation step]
+1. **<Candidate>:** <What to build and why it comes at this point>
 
-## Dependencies and Blockers
-- [Dependency]
-- [Blocker]
-- [Missing test data, selectors, or environment need]
+## Blockers
+- <Dependency, missing test data, selector, or environment need>
 
-## Out of Scope for Now
-- [Low-value or unstable scenario]
-- [Manual-only scenario for now]
+## Not Worth Automating Now
+- <Low-value or unstable scenario, and why>
 ```
+
+### Limits
+
+- **One idea per bullet, about 20 words at most.** Name at most 3 things in a bullet. Do not pack a list of topics into one bullet to stay under a limit. Keep what matters most and name the rest in one line: `Left out: <topic>, <topic>.`.
+- **Coverage Gaps:** 8 rows at most, highest risk first. Leave out areas with no gap.
+- **Recommended Order, Blockers, Not Worth Automating Now:** 1–4 items each, most important first, one line each.
+- **Length:** about 300 words.
+- **No decorative emoji** in the title or headings.
 
 ## File Output (Required)
 

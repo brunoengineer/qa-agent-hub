@@ -39,12 +39,17 @@ Please provide:
 
 ## Output
 
-A structured health report containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Health Score** — High / Medium / Low overall assessment
-- **Analyzed** — summary of what was found at the path (file counts by type)
-- **Improvement Report** — bullet observations across Code Quality and Architecture
-- **3 Prioritized Jira Tasks** — each with title, description, in/out scope, and 2–3 acceptance criteria
+A health report of about 400 words. See the [example](../examples/automation-health-check.md). The exact template is in the command file.
+
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Health Score · What was analyzed (file counts by type) | 1 line |
+| **Summary** | The biggest risk and what to fix first | 2 sentences |
+| **Code Quality** | Specific observations, highest impact first | 4 bullets |
+| **Architecture** | Specific observations, highest impact first | 4 bullets |
+| **Proposed Jira Tasks** | Exactly 3, each with a description, scope, and acceptance criteria | 4 criteria per task |
 
 ### Task Priority Scale
 

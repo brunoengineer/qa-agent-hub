@@ -43,48 +43,18 @@ Please provide:
 
 ## Output
 
-A structured gap analysis containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Automation Readiness** — High/Medium/Low
-- **Primary Goal** — why automation is needed
-- **Current State** — summary of existing manual and automated coverage
-- **Coverage Matrix** — table with area, manual coverage, automated coverage, gap, and risk
-- **Best Automation Candidates** — ranked with reasoning
-- **Recommended Order** — implementation sequence
-- **Dependencies and Blockers** — missing test data, selectors, environment needs
-- **Out of Scope for Now** — low-value or unstable scenarios
+A one-screen gap analysis of about 300 words. See the [example](../examples/automation-gap-analysis.md). The exact template is in the command file.
 
-### Output Template
-
-```markdown
-# Automation Gap Analysis - [Feature or Scope]
-
-**Automation Readiness:** High/Medium/Low
-**Primary Goal:** [Why automation is needed here]
-
-## Current State
-[Summary of existing manual and automated coverage]
-
-## Coverage Matrix
-
-| Area | Manual Coverage | Automated Coverage | Gap | Risk |
-|---|---|---|---|---|
-
-## Best Automation Candidates
-1. [Candidate and why it matters]
-2. [Candidate and why it matters]
-
-## Recommended Order
-1. [First implementation step]
-2. [Second implementation step]
-
-## Dependencies and Blockers
-- [Dependency]
-- [Blocker]
-
-## Out of Scope for Now
-- [Low-value or unstable scenario]
-```
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Readiness · Goal | 1 line |
+| **Automate first** | The top candidate and why it comes first | 2 sentences |
+| **Coverage Gaps** | Manual and automated coverage, gap, risk, highest risk first | 8 rows |
+| **Recommended Order** | What to build, in order | 4 items |
+| **Blockers** | Dependencies, test data, selectors, environment needs | 4 bullets |
+| **Not Worth Automating Now** | Low-value or unstable scenarios, and why | 4 bullets |
 
 ## Saved File
 

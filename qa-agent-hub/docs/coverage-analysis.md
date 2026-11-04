@@ -9,7 +9,7 @@
 
 ## Purpose
 
-Analyzes test coverage against requirements. Maps test cases to requirement categories, estimates coverage percentages, and identifies strengths, critical gaps, and recommended improvements.
+Analyzes test coverage against requirements. Maps test cases to requirement categories, estimates coverage percentages, and identifies the biggest gaps and the tests to add first.
 
 ## How to Use
 
@@ -43,14 +43,16 @@ Format: CSV, table, or plain text list
 
 ## Output
 
-A structured coverage analysis report containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Requirements Categories Identified** — numbered list
-- **Test Case Coverage Breakdown** — table with category, requirements count, test cases covering, coverage %, and notes
-- **Overall Coverage Estimate** — percentage range with rating
-- **Strengths** — well-covered areas with percentages
-- **Critical Gaps** — poorly covered areas with missing references
-- **Recommendations** — high, medium, and low priority actions
+A one-screen coverage report of about 300 words. See the [example](../examples/coverage-analysis.md). The exact template is in the command file.
+
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Overall coverage and rating · Requirements · Test cases · Date | 1 line |
+| **Summary** | What is safe, the biggest gap, what to add first | 2 sentences |
+| **Coverage by Category** | Requirements, tests, coverage, and gap, lowest coverage first | 8 rows |
+| **Tests to Add First** | Missing tests, tagged High, Medium, or Low | 4 items |
 
 ### Coverage Rating Scale
 
@@ -61,48 +63,6 @@ A structured coverage analysis report containing:
 | 50–69% | Moderate, notable gaps |
 | 30–49% | Poor, significant gaps |
 | 0–29% | Very poor or no coverage |
-
-### Output Template
-
-```markdown
-# Test Coverage Analysis - [Feature Name]
-
-## Coverage Analysis
-
-### Requirements Categories Identified
-1. [Category]
-2. [Category]
-
-### Test Case Coverage Breakdown
-
-| Requirement Category | Requirements Count | Test Cases Covering | Coverage % | Notes |
-|---|---|---|---|---|
-
-## Overall Coverage Estimate: **XX-XX%**
-
-### Strengths
-✅ **Well Covered Areas:**
-- [Area] - ~XX% coverage
-
-### Critical Gaps
-❌ **Poorly Covered Areas:**
-- [Area] - ~XX% coverage
-
-## Recommendations
-
-### High Priority
-1. [Critical missing test case]
-
-### Medium Priority
-1. [Important but not urgent]
-
-### Low Priority
-1. [Nice-to-have addition]
-
----
-
-**Analysis Date:** YYYY-MM-DD
-```
 
 ## Saved File
 
