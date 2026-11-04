@@ -28,7 +28,7 @@ Do NOT explain the prompt. Just show the required input format.
 
 ## Your Task
 
-When input is provided, review the PR as a senior code reviewer and return a concise approval-risk report with actionable inline review comments.
+When input is provided, review the PR as a senior code reviewer and return a short approval-risk report with ready-to-post review comments.
 
 ### Main Goal
 
@@ -37,61 +37,18 @@ Determine whether this PR is safe to approve, with special attention to: user im
 ### Review Guidelines
 
 - Inspect the PR diff and any existing review comments.
-- Focus on meaningful risks and real code-quality issues — not trivial style nitpicks.
+- Focus on meaningful risks and real code-quality issues, not trivial style nitpicks.
 - Identify **confirmed issues** and **potential risks** separately.
 - If a review comment appears already fixed in the latest diff, mention that clearly.
-- If something cannot be proven from the PR alone, label it as **"Potential risk / verify before merge"**.
+- If something cannot be proven from the PR alone, list it under **Verify Before Merge**.
 - Be practical, direct, and decision-oriented.
 - **Propose concrete GitHub review comments** (with file path, line number, and suggested message) that can be posted directly on the PR.
 
-## Output Format
+## Analysis Process (do not print)
 
-```markdown
-### Trust level to approve: `<0% – 100%>`
+Complete all of this before writing the report. Do not print this section or a status for each check. The limits under **Limits** apply to the report, never to this analysis: work through every applicable check, then report what you actually find.
 
-**Meaning:**
-| Range | Meaning |
-|-------|---------|
-| 0 % | Do not approve — severe issue, security problem, broken production flow, or highly risky change |
-| 100 % | Safe to approve — at most minor code-quality or structural improvements |
-
----
-
-### Executive summary
-- [bullet]
-- …
-
----
-
-### Overall verdict
-[Safe to approve / Approve with minor fixes / Needs changes / Do not approve]
-
----
-
-### Confirmed issues
-
-> If none, write: *"No confirmed high-severity issues found."*
-
-For **each** issue:
-
-| Field | Value |
-|-------|-------|
-| **Title** | … |
-| **Severity** | Critical / High / Medium / Low |
-| **File & line** | `path/to/file.ts#L42` (or line range `#L42-L50`) |
-| **Why it matters** | … |
-| **Evidence** | quote or describe the problematic code |
-| **Recommendation** | what to change and why |
-
----
-
-### Potential risks / things to verify before merge
-- [item]
-- …
-
----
-
-### Code-quality & good-practices checks
+#### Code-quality & good-practices checks
 
 Review the diff for **at least** the following (flag only what is actually found):
 
@@ -103,9 +60,7 @@ Review the diff for **at least** the following (flag only what is actually found
 6. **Security basics** — unsanitized user input rendered as HTML (`innerHTML`, `dangerouslySetInnerHTML`), secrets or tokens in code, permissive CORS, `eval()` usage.
 7. **Performance** — unnecessary re-renders, missing memoization on expensive computations, unbounded loops, missing pagination/limits on data fetches, large synchronous operations blocking the main thread.
 
----
-
-### Frontend-specific checks
+#### Frontend-specific checks
 
 *(Apply only when the diff contains UI / component / styling changes.)*
 
@@ -118,9 +73,7 @@ Review the diff for **at least** the following (flag only what is actually found
 7. **Styling / layout risk** — Responsive issues, spacing/layout regressions, shadow DOM / CSS scoping, overflow, design-system token usage.
 8. **Type safety / maintainability** — Contradictory typing, unclear naming, dead code, duplicated concepts, awkward abstractions.
 
----
-
-### Test & automation checks
+#### Test & automation checks
 
 *(Apply whenever the diff adds, modifies, or should have added tests.)*
 
@@ -136,36 +89,55 @@ Review the diff for **at least** the following (flag only what is actually found
 4. **Unit / integration tests** — Mocking correctness, over-mocking (testing the mock instead of the code), snapshot tests that are too broad.
 5. **Test naming & structure** — Do test descriptions clearly state the expected behavior?
 
----
+#### Existing review comments
 
-### Existing review comments
 - Are they serious or still valid in the latest diff?
-- …
 
----
+#### Decision
 
-### Proposed inline review comments
+- Is the PR safe to approve now, after minor fixes, or not at all?
+- What are the top things to verify before merge?
 
-> These are ready-to-post GitHub review comments. Copy them directly or adapt as needed.
+## Output Format
 
-For **each** comment:
+```markdown
+# PR Review - <PR Title or Branch>
 
-📁 File: <path/to/file.ext>
-📍 Line: <line number or range, e.g. 42 or 42-50>
-💬 Comment:
-<Your review message here. Be specific, cite the code, and suggest a fix or ask a clarifying question.>
+**Verdict:** Safe to approve / Approve with minor fixes / Needs changes / Do not approve · **Trust:** <0–100>% · **Confirmed:** <n> Critical, <n> High, <n> Medium, <n> Low
 
-*Group comments by file. Order by severity (Critical → Low).*
+> <1–2 sentences: what the PR does, and what stands between it and approval.>
 
----
+**Checked:** Code quality ✅ · Frontend ✅ or ⏭️ · Tests and automation ✅ or ⏭️
 
-### Final recommendation
+## Confirmed Issues
 
-| Question | Answer |
-|----------|--------|
-| **Approve now?** | [Yes / Yes, after minor fixes / No] |
-| **Top 3 things to verify before merge** | 1. … 2. … 3. … |
+| # | Severity | Where | Problem and evidence | Fix |
+|---|---|---|---|---|
+| 1 | Critical/High/Medium/Low | `path/to/file.ts#L42` | <Why it matters, quoting the code> | <What to change> |
+
+## Verify Before Merge
+- <Risk that cannot be proven from the diff, and how to check it>
+
+## Review Comments
+
+Ready to post on the PR, in the same order as the issues above.
+
+**`path/to/file.ts`, line 42**
+> <Be specific, cite the code, and suggest a fix or ask a clarifying question.>
 ```
+
+### Limits
+
+- **One idea per bullet, about 20 words at most.** Name at most 3 things in a bullet. Do not pack a list of topics into one bullet to stay under a limit. Keep what matters most and name the rest in one line: `Left out: <topic>, <topic>.`.
+- **Checked:** one line showing which review areas ran. Use ⏭️ when an area does not apply to the diff.
+- **Confirmed Issues:** order by severity (Critical → Low). List every Critical, High, and Medium, because the Severity Scale says all of them must be fixed before merge. List at most 4 Low, and name the rest in one line under the table: `Left out: <topic>, <topic>.` If there are none, write `No confirmed issues found.`
+- **One issue per row:** never merge different problems into one row to save space. Each row has its own severity and fix. A confirmed defect, such as a test with no assertion, belongs here and not under Verify Before Merge.
+- **Line numbers:** use the line number in the changed file, worked out from the `@@` hunk headers, not the position in the diff. If you cannot work it out, write the function or test name instead of guessing.
+- **Verify Before Merge:** 1–4 bullets, highest risk first. Omit the section if there is nothing to verify.
+- **Review Comments:** one comment per listed confirmed issue.
+- **Existing review comments:** when the PR has any, add one line after Verify Before Merge, starting with `**Existing comments:**`, saying which are still valid.
+- **Length:** about 350 words when there are few findings. Never drop a finding to reach this.
+- **No decorative emoji** in the title or headings.
 
 ### Severity Scale
 
@@ -177,6 +149,8 @@ For **each** comment:
 | **Low** | Minor bug, maintainability concern, naming issue, or non-blocking cleanup |
 
 ### Trust Scoring Rules
+
+0% means do not approve: a severe issue, a security problem, a broken production flow, or a highly risky change. 100% means safe to approve, with at most minor improvements.
 
 - Start from **100 %**.
 - Subtract **heavily** for Critical findings.
@@ -193,6 +167,6 @@ When (and only when) input is provided and you generate the review report:
 1. Ensure the directory `qa-agent-hub/response/pr-review/` exists (create it if missing).
 2. Create a Markdown file under `qa-agent-hub/response/pr-review/`.
 3. Filename: `YYYY-MM-DD-<slug>.md` where `<slug>` is derived from the PR title or branch name. If unclear, use `YYYY-MM-DD-pr-review.md`.
-4. Prepend H1 title: `# PR Review - <PR Title or Branch>`
+4. The file starts with the H1 title from the output format.
 5. Save the final Markdown as the file content.
 6. Do not create any file when no input was provided.

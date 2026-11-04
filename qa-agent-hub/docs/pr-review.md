@@ -53,19 +53,20 @@ The agent inspects the diff across multiple dimensions:
 
 ## Output
 
-A structured approval-risk report containing:
+The agent completes a full Analysis Process first. The limits below apply to the printed report, not to that analysis.
 
-- **Trust level to approve** — 0%–100% score
-- **Executive summary** — key points at a glance
-- **Overall verdict** — Safe to approve / Approve with minor fixes / Needs changes / Do not approve
-- **Confirmed issues** — table with severity, file & line, evidence, recommendation
-- **Potential risks** — items to verify before merge
-- **Code-quality checks** — flags from 7 good-practices categories
-- **Frontend-specific checks** — 8 UI/component review categories (when applicable)
-- **Test & automation checks** — 5 test quality categories (when applicable)
-- **Existing review comments** — status of prior feedback
-- **Proposed inline review comments** — ready-to-post GitHub comments with file, line, and message
-- **Final recommendation** — approve decision and top 3 verification items
+A short approval-risk report, about 350 words when there are few findings. The first 3 lines carry the decision. See the [example](../examples/pr-review.md). The exact template is in the command file.
+
+| Part | Content | Limit |
+|---|---|---|
+| **Meta line** | Verdict · Trust (0–100%) · Confirmed issue counts by severity | 1 line |
+| **Summary** | What the PR does and what stands between it and approval | 2 sentences |
+| **Checked** | Which review areas ran, with ⏭️ for areas that do not apply | 1 line |
+| **Confirmed Issues** | Severity, file and line, problem with evidence, fix | Every Critical, High, and Medium, then 4 Low. One issue per row |
+| **Verify Before Merge** | Risks that cannot be proven from the diff | 4 bullets |
+| **Review Comments** | Ready-to-post comments with file and line | 1 per listed issue |
+
+The agent still works through every check under Review Dimensions, but it reports only what it finds. A check with nothing to report does not appear in the output.
 
 ### Severity Scale
 

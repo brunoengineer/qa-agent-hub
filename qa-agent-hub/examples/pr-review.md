@@ -1,133 +1,38 @@
 # PR Review - feat/my-offers-wagering-progress
 
-### Trust level to approve: `65%`
+**Verdict:** Approve with minor fixes · **Trust:** 65% · **Confirmed:** 0 Critical, 0 High, 2 Medium, 1 Low
 
-**Meaning:**
-| Range | Meaning |
-|-------|---------|
-| 0 % | Do not approve — severe issue, security problem, broken production flow, or highly risky change |
-| 100 % | Safe to approve — at most minor code-quality or structural improvements |
+> Adds fractional wagering progress to the expanded offer card through a new `formatWagerProgress()` helper. Before approval, the fractional case needs a test, the API response needs a type, and a leftover log needs removing.
 
----
+**Checked:** Code quality ✅ · Frontend ✅ · Tests and automation ✅
 
-### Executive summary
-- Adds fractional wagering progress display to the expanded offer card.
-- Introduces a helper `formatWagerProgress()` used by both the card and the stepper.
-- Updates one Playwright spec but does not cover the fractional case the PR is meant to fix.
-- Contains a leftover `console.log` and an `any` cast around the API response.
+## Confirmed Issues
 
----
+| # | Severity | Where | Problem and evidence | Fix |
+|---|---|---|---|---|
+| 1 | Medium | `tests/e2e/my-offers/expanded-card.spec.ts#L120-L155` | The PR exists for fractional progress, but the test only checks an integer: `toHaveText('50/100')` | Add a `12.5/100` case using the same fixture pattern |
+| 2 | Medium | `src/features/my-offers/api.ts#L42-L48` | New API fields are untyped, so contract changes will not fail at compile time: `(await res.json()) as any` | Add an `OfferDetailsResponse` type |
+| 3 | Low | `src/features/my-offers/ExpandedCard.tsx#L84` | Logs progress data to the browser console in production: `console.log('wager progress', progress)` | Remove the log |
 
-### Overall verdict
-Approve with minor fixes
+Left out: no `aria-label` on the progress text, magic number `100` in `ExpandedCard.tsx`.
 
----
+## Verify Before Merge
+- The backend always returns `wagerProgress` as a number. The helper has no null check, so the card would show `NaN/100`.
+- `api.ts` handles JSON parse errors. They appear to be swallowed instead of reaching the error boundary.
+- The helper uses the right decimal separator across locales (comma vs dot).
+- The wider label (`12.5/100`) does not shift the stepper or push the forfeit button down on iOS Safari.
 
-### Confirmed issues
+**Existing comments:** Reviewer A's request for a unit test on the helper is still valid and not addressed.
 
-| Field | Value |
-|-------|-------|
-| **Title** | Leftover `console.log` in production code path |
-| **Severity** | Low |
-| **File & line** | `src/features/my-offers/ExpandedCard.tsx#L84` |
-| **Why it matters** | Pollutes the browser console in production and can leak progress data to logs. |
-| **Evidence** | `console.log('wager progress', progress);` |
-| **Recommendation** | Remove the log before merge. |
+## Review Comments
 
-| Field | Value |
-|-------|-------|
-| **Title** | `any` cast hides a real type contract for `/offers/:id` |
-| **Severity** | Medium |
-| **File & line** | `src/features/my-offers/api.ts#L42-L48` |
-| **Why it matters** | The new `wageringMultiplier` and `wagerProgress` fields are not typed, so future consumers will not get compile-time errors when the API contract changes. |
-| **Evidence** | `const data = (await res.json()) as any;` |
-| **Recommendation** | Define an `OfferDetailsResponse` type with the new fields and use it instead of `any`. |
+Ready to post on the PR, in the same order as the issues above.
 
-| Field | Value |
-|-------|-------|
-| **Title** | New behavior is not covered by the updated test |
-| **Severity** | Medium |
-| **File & line** | `tests/e2e/my-offers/expanded-card.spec.ts#L120-L155` |
-| **Why it matters** | The PR exists to display fractional wager progress, but the only updated test asserts the integer case. A regression in the fractional path would not be caught. |
-| **Evidence** | `await expect(progressLabel).toHaveText('50/100');` |
-| **Recommendation** | Add a case asserting fractional progress (e.g., `12.5/100`) using the same fixture pattern. |
+**`tests/e2e/my-offers/expanded-card.spec.ts`, lines 120–155**
+> Since this PR introduces fractional wager progress, please add a case that asserts a fractional value such as `12.5/100`. The current assertion only covers the integer case the code already supported.
 
----
+**`src/features/my-offers/api.ts`, lines 42–48**
+> Casting the response to `any` removes type safety here. Could you define an `OfferDetailsResponse` type with `wageringMultiplier` and `wagerProgress` and use it instead?
 
-### Potential risks / things to verify before merge
-- Confirm the backend always returns `wagerProgress` as a number; the helper does not handle `null`/`undefined`.
-- Verify the new helper rounds correctly across locales (e.g., comma vs dot decimal).
-- Verify the change does not regress the stepper layout on narrow viewports.
-
----
-
-### Code-quality & good-practices checks
-1. **Leftover debugging artifacts** — `console.log` in `ExpandedCard.tsx` (see confirmed issues).
-2. **Function & method correctness** — `formatWagerProgress()` does not guard against negative or non-finite numbers; consider an early return.
-3. **Error handling** — The `api.ts` change swallows JSON parse errors silently; surface them to the existing error boundary.
-4. **Naming & readability** — Magic number `100` appears twice in `ExpandedCard.tsx`; extract as a named constant or read from API.
-5. **Dead or duplicated code** — None found.
-6. **Security basics** — None found.
-7. **Performance** — None found.
-
----
-
-### Frontend-specific checks
-1. **Functional correctness** — Behavior matches intent for the integer case; fractional case is unverified by tests.
-2. **Regression risk** — Stepper layout could shift when the progress label widens (e.g., `12.5/100` vs `50/100`).
-3. **Component contract compatibility** — `ExpandedCardProps` did not change; safe.
-4. **Event handling & side effects** — None added.
-5. **Rendering stability** — Loading and empty states for `wagerProgress` are not handled; renders `NaN/100` if the field is missing.
-6. **Accessibility** — Progress is rendered as plain text without an `aria-label`; consider exposing it as a progressbar role for screen readers.
-7. **Styling / layout risk** — Verify wider labels do not push the forfeit button below the fold on iOS Safari.
-8. **Type safety / maintainability** — `any` cast in `api.ts` (see confirmed issues).
-
----
-
-### Test & automation checks
-1. **Missing test coverage** — Fractional progress case missing.
-2. **Test correctness** — Existing assertion is valid but vacuous for the new behavior.
-3. **Playwright / E2E specifics**:
-   - Selectors use `data-testid` — good.
-   - No `waitForTimeout` introduced — good.
-   - Assertions use auto-retrying `expect(locator).toHaveText` — good.
-4. **Unit / integration tests** — No unit test for `formatWagerProgress()`; recommend adding one with boundary inputs.
-5. **Test naming & structure** — Test names are clear.
-
----
-
-### Existing review comments
-- Reviewer A asked for a unit test on the helper — still valid, not addressed.
-
----
-
-### Proposed inline review comments
-
-📁 File: src/features/my-offers/ExpandedCard.tsx
-📍 Line: 84
-💬 Comment:
-Please remove this `console.log` before merge — it will run in production and leak progress data to the browser console.
-
-📁 File: src/features/my-offers/api.ts
-📍 Line: 42-48
-💬 Comment:
-Casting the response to `any` removes the type safety we get on the rest of the surface. Could you define an `OfferDetailsResponse` type with `wageringMultiplier` and `wagerProgress` and use it here?
-
-📁 File: tests/e2e/my-offers/expanded-card.spec.ts
-📍 Line: 120-155
-💬 Comment:
-Since the PR introduces fractional wager progress, please add a case that asserts a fractional value such as `12.5/100`. The current assertion only covers the integer case the code already supported.
-
-📁 File: src/features/my-offers/format.ts
-📍 Line: 1-20
-💬 Comment:
-Consider adding a unit test for `formatWagerProgress()` with negative, zero, fractional, and non-finite inputs to lock the helper's contract.
-
----
-
-### Final recommendation
-
-| Question | Answer |
-|----------|--------|
-| **Approve now?** | Yes, after minor fixes |
-| **Top 3 things to verify before merge** | 1. Remove the leftover `console.log`. 2. Replace the `any` cast with a typed response. 3. Add a fractional-progress assertion to the spec. |
+**`src/features/my-offers/ExpandedCard.tsx`, line 84**
+> Please remove this `console.log` before merge. It runs in production and writes progress data to the browser console.
