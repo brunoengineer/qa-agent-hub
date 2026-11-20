@@ -92,7 +92,7 @@ flowchart LR
 - Edges are labelled with the relation (`uses`, `selects`, `loads`). Dotted edges mark conditional paths, such as `mobile only`.
 - GitHub and GitLab render Mermaid. Other tools show the code block as text.
 
-The chat response opens with one line naming the branch, base, and change sources found. After the description, it adds a short **Before you post** list of gaps the author must fill (missing ticket ID, files still uncommitted or untracked, unconfirmed inferences, missing test evidence). The list appears in chat only and is not saved to the file.
+The chat response opens with one line naming the branch, base, and change sources found. The description follows as raw Markdown in a code block, so it can be copied into GitHub without losing headings, tables, or the Mermaid diagram. The saved file has no outer code block. After the description, it adds a short **Before you post** list of gaps the author must fill (missing ticket ID, files still uncommitted or untracked, unconfirmed inferences, missing test evidence). The list appears in chat only and is not saved to the file.
 
 ### Risk Scale
 

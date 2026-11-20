@@ -169,7 +169,7 @@ When no ticket ID was found, the H1 is `# <Outcome-focused title>` and the meta 
 ## Chat Response
 
 1. Start with one line naming what was described: branch, base, and the change sources found (e.g. `main vs origin/main: 0 commits, 2 modified, 5 untracked`).
-2. Return the full PR description exactly as saved.
+2. Return the full PR description as raw Markdown inside a code block, so it can be copied as is instead of as rendered text. Open the block with four backticks followed by `markdown`, and close it with four backticks, so the Mermaid and bash blocks inside stay intact. The saved file has no outer code block.
 3. After it, add a short **Before you post** list (chat only, not in the file) with any gaps the author must fill: missing ticket ID, uncommitted or untracked files that must be committed before opening the PR, unconfirmed inferences, missing test evidence. Skip the list when there are no gaps.
 4. Remind the user that the H1 is the suggested PR title: paste it into the title field and the rest into the PR body.
 
